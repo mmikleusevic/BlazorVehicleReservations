@@ -61,7 +61,15 @@ namespace BlazorVehicleReservations.API.Service
         {
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
 
-            throw new NotImplementedException();
+            var vehicleId = new SqlParameter("@VehicleId", vehicle.Id);
+            var manufacturer = new SqlParameter("@Manufacturer", vehicle.Manufacturer);
+            var model = new SqlParameter("@Model", vehicle.Model);
+            var type = new SqlParameter("@Type", vehicle.Type);
+            var color = new SqlParameter("@Color", vehicle.Color);
+            var year = new SqlParameter("@Year", vehicle.Year);
+
+            return await _context.Database.ExecuteSqlRawAsync("exec spUpdateVehicle @VehicleId, @Manufacturer, @Model, @Type, @Color, @Year",
+                                                                vehicleId, manufacturer, model, type, color, year);
         }
     }
 }

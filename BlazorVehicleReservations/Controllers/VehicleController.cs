@@ -77,22 +77,22 @@ namespace BlazorVehicleReservations.API.Controllers
         /// <summary>
         /// Creates a vehicle
         /// </summary>
-        /// <param name="vehicle"></param>
+        /// <param name="vehicleDto"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateVehicle(VehicleDto vehicle)
+        public async Task<IActionResult> CreateVehicle(VehicleDto vehicleDto)
         {
             try
             {
-                if (vehicle != null)
+                if (vehicleDto != null)
                 {
-                    var result = await _vehicleService.CreateVehicle(vehicle);
+                    var result = await _vehicleService.CreateVehicle(vehicleDto);
                     if (result != 0)
                     {
                         //TODO
-                        return Created("da",result);
+                        return Created("da", result);
                     }
                 }
                 return BadRequest();
@@ -139,19 +139,23 @@ namespace BlazorVehicleReservations.API.Controllers
         /// <summary>
         /// Updates a vehicle
         /// </summary>
-        /// <param name="vehicle"></param>
+        /// <param name="vehicleDto"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateVehicle(VehicleDto vehicle)
+        public async Task<IActionResult> UpdateVehicle(VehicleDto vehicleDto)
         {
             try
             {
-                if (vehicle != null)
+                if (vehicleDto != null)
                 {
-                    var result = await _vehicleService.UpdateVehicle(vehicle);
+                    var result = await _vehicleService.UpdateVehicle(vehicleDto);
                     if (result != 0)
+                    {
+                        return Ok();
+                    }
+                    else
                     {
                         return NoContent();
                     }

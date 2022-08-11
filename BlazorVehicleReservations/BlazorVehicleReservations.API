@@ -21,7 +21,7 @@
             <summary>
             Creates a vehicle
             </summary>
-            <param name="vehicle"></param>
+            <param name="vehicleDto"></param>
             <returns></returns>
         </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.DeleteVehicle(System.Int32)">
@@ -35,7 +35,7 @@
             <summary>
             Updates a vehicle
             </summary>
-            <param name="vehicle"></param>
+            <param name="vehicleDto"></param>
             <returns></returns>
         </member>
     </members>
