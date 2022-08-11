@@ -8,6 +8,7 @@ using Serilog;
 using System.Reflection;
 
 Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Error()
       .Enrich.FromLogContext()
       .WriteTo.File($@"{Directory.GetCurrentDirectory()}\Logs\log.txt")
       .CreateLogger();

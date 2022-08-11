@@ -4,7 +4,7 @@ namespace BlazorVehicleReservations.Shared.Models.Dto
 {
     public class ReservationDto
     {
-        public int ReservationId { get; set; }
+        public int Id { get; set; }
         [Required]
         public int ClientId { get; set; }
         [Required]

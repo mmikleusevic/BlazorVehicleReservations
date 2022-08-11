@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorVehicleReservations.API.Migrations
 {
     [DbContext(typeof(VehicleReservationsContext))]
-    [Migration("20220811074303_StoredProcedure")]
-    partial class StoredProcedure
+    [Migration("20220811190305_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,6 +84,56 @@ namespace BlazorVehicleReservations.API.Migrations
                             Gender = "Male",
                             LastName = "Alenić"
                         });
+                });
+
+            modelBuilder.Entity("BlazorVehicleReservations.Shared.Models.Dto.ReservationDto", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Dob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReservedFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReservedUntil")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.Property<short?>("Year")
+                        .HasColumnType("smallint");
+
+                    b.ToView(null);
                 });
 
             modelBuilder.Entity("BlazorVehicleReservations.Shared.Reservation", b =>

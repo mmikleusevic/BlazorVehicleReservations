@@ -6,6 +6,7 @@ namespace BlazorVehicleReservations.API.Service
     {
         Task<IEnumerable<ReservationDto>> SearchReservation(ReservationDto reservationDto);
         Task<List<ReservationDto>> GetAllReservations();
+        Task<List<ReservationDto>> GetAllClientReservations(int id);
         Task<ReservationDto> GetReservation(int id);
         Task<int> CreateReservation(ReservationDto reservationDto);
         Task<int> UpdateReservation(ReservationDto reservationDto);

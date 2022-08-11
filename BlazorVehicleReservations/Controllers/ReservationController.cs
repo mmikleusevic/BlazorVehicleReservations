@@ -149,6 +149,7 @@ namespace BlazorVehicleReservations.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -156,7 +157,7 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             try
             {
-                if (id == reservationDto.VehicleId)
+                if (id == reservationDto.Id)
                 {
                     var result = await _reservationService.UpdateReservation(reservationDto);
                     if (result != 0)

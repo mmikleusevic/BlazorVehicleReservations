@@ -1,4 +1,5 @@
 ﻿using BlazorVehicleReservations.Shared;
+using BlazorVehicleReservations.Shared.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorVehicleReservations.API.Context
@@ -17,6 +18,7 @@ namespace BlazorVehicleReservations.API.Context
         public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<Reservation> Reservations { get; set; } = null!;
         public virtual DbSet<Vehicle> Vehicles { get; set; } = null!;
+        public virtual DbSet<ReservationDto> ReservationDtos { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -77,6 +79,11 @@ namespace BlazorVehicleReservations.API.Context
                 entity.Property(e => e.Model).HasMaxLength(100);
 
                 entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ReservationDto>(e =>
+            {
+                e.HasNoKey().ToView(null);
             });
 
             modelBuilder.Entity<Client>().HasData(

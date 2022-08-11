@@ -4,7 +4,7 @@
 
 namespace BlazorVehicleReservations.API.Migrations
 {
-    public partial class StoredProcedure : Migration
+    public partial class StoredProcedures : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,11 +56,7 @@ namespace BlazorVehicleReservations.API.Migrations
 	            @ReservedUntil datetime = NULL
             AS
             BEGIN
-	            DECLARE @NumberOfCars int = NULL
 	            SET NOCOUNT OFF;
-
-	            SELECT @NumberOfCars = COUNT(ClientId) FROM Reservation
-	            WHERE ClientId = @ClientId;
 	
 			    INSERT INTO dbo.Reservation(ClientId,VehicleId,ReservedFrom, ReservedUntil)
 			    VALUES(@ClientId, @VehicleId, @ReservedFrom, @ReservedUntil)
@@ -475,26 +471,19 @@ namespace BlazorVehicleReservations.API.Migrations
 
             -- =============================================
             -- Author:		Marin Mikleušević
-            -- Create date: 11.8.2022 08:39
+            -- Create date: 11.8.2022 20:19
             -- Description:	Update a reservation
             -- =============================================
             CREATE PROCEDURE [dbo].[spUpdateReservation]
 	            @ReservationId int,
-	            @ClientId int,
-	            @VehicleId int,
 	            @ReservedFrom datetime,
 	            @ReservedUntil datetime
             AS
             BEGIN
-	            DECLARE @NumberOfCars int = NULL;
 	            SET NOCOUNT OFF;
-	
-	            SELECT @NumberOfCars = COUNT(ClientId) FROM Reservation
-	            WHERE ClientId = @ClientId;
 
 		         UPDATE Reservation
-		         SET ClientId = @ClientId,
-			        VehicleId = @VehicleId,
+		         SET 
 			        ReservedFrom = @ReservedFrom,
 			        ReservedUntil = @ReservedUntil
 		         WHERE Id = @ReservationId
@@ -553,8 +542,8 @@ namespace BlazorVehicleReservations.API.Migrations
             BEGIN
 	            SET NOCOUNT ON;
 
-	            SELECT r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
-		            c.LastName, c.DOB, c.Gender, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
+	            SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
+		            c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]
 		            FROM Reservation r
 	            LEFT JOIN Client c
 		            ON r.ClientId = c.Id

@@ -19,7 +19,17 @@ namespace BlazorVehicleReservations.API.Service
         }
         public async Task<int> CreateReservation(ReservationDto reservationDto)
         {
-            throw new NotImplementedException();
+            var result = await GetAllClientReservations(reservationDto.ClientId);
+
+            var reservation = _mapper.Map<Reservation>(reservationDto);
+
+            var clientId = new SqlParameter("@ClientId", reservation.ClientId);
+            var vehicleId = new SqlParameter("@VehicleId", reservation.VehicleId);
+            var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
+            var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
+
+            return await _context.Database.ExecuteSqlRawAsync($"exec spCreateReservation @ClientId, @VehicleId, @ReservedFrom, @ReservedUntil",
+                                                                clientId, vehicleId, reservedFrom, reservedUntil);
         }
 
         public async Task<int> DeleteReservation(int id)
@@ -30,16 +40,21 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<List<ReservationDto>> GetAllReservations()
         {
-            var result = await _context.Reservations.FromSqlRaw("exec spGetAllReservations").ToListAsync();
-            return _mapper.Map<List<ReservationDto>>(result);
+            return await _context.ReservationDtos.FromSqlRaw("exec spGetAllReservations").ToListAsync();
         }
 
         public async Task<ReservationDto> GetReservation(int id)
         {
             var reservationId = new SqlParameter("@ReservationId", id);
-            var resultList = await _context.Clients.FromSqlRaw($"exec spGetReservation @ReservationId", reservationId).ToListAsync();
+            var resultList = await _context.ReservationDtos.FromSqlRaw($"exec spGetReservation @ReservationId", reservationId).ToListAsync();
             var result = resultList.FirstOrDefault();
             return _mapper.Map<ReservationDto>(result);
+        }
+
+        public Task<List<ReservationDto>> GetAllClientReservations(int id)
+        {
+            var clientId = new SqlParameter("@ClientId", id);
+            return Task.FromResult(_context.ReservationDtos.FromSqlRaw("exec spGetAllClientReservations @ClientId", clientId).ToList());
         }
 
         public async Task<IEnumerable<ReservationDto>> SearchReservation(ReservationDto reservationDto)
@@ -49,7 +64,14 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<int> UpdateReservation(ReservationDto reservationDto)
         {
-            throw new NotImplementedException();
+            var reservation = _mapper.Map<Reservation>(reservationDto);
+
+            var reservationId = new SqlParameter("@ReservationId", reservation.Id);
+            var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
+            var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
+
+            return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateReservation @ReservationId, @ReservedFrom, @ReservedUntil",
+                                                                reservationId, reservedFrom, reservedUntil);
         }
     }
 }
