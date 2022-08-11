@@ -49,9 +49,6 @@ namespace BlazorVehicleReservations.API.Context
             {
                 entity.ToTable("Reservation");
 
-                entity.HasIndex(e => e.VehicleId, "Unique_Vehicle")
-                    .IsUnique();
-
                 entity.Property(e => e.ReservedFrom).HasColumnType("datetime");
 
                 entity.Property(e => e.ReservedUntil).HasColumnType("datetime");
@@ -82,6 +79,84 @@ namespace BlazorVehicleReservations.API.Context
                 entity.Property(e => e.Type).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Client>().HasData(
+                new Client
+                {
+                    Id = 1,
+                    Country = "Croatia",
+                    Dob = new DateTime(2000,08,09),
+                    FirstName = "Marko",
+                    LastName = "Marulić",
+                    Gender = "Male"
+                },
+                new Client
+                {
+                    Id = 2,
+                    Country = "Croatia",
+                    Dob = new DateTime(1995, 08, 09),
+                    FirstName = "Ivo",
+                    LastName = "Ivić",
+                    Gender = "Male"
+                },
+                new Client
+                {
+                    Id = 3,
+                    Country = "Croatia",
+                    Dob = new DateTime(1980, 08, 09),
+                    FirstName = "Alenko",
+                    LastName = "Alenić",
+                    Gender = "Male"
+                }
+            );
+
+            modelBuilder.Entity<Vehicle>().HasData(
+                new Vehicle
+                {
+                    Id = 1,
+                    Manufacturer = "BMW",
+                    Model = "Series 3",
+                    Color = "Black",
+                    Type = "Sedan",
+                    Year = 2010
+                },
+                new Vehicle
+                {
+                    Id = 2,
+                    Manufacturer = "Ferrari",
+                    Model = "Maranello",
+                    Color = "Red",
+                    Type = "Limousine",
+                    Year = 1993
+                },
+                new Vehicle
+                {
+                    Id = 3,
+                    Manufacturer = "Lamborghini",
+                    Model = "Diablo",
+                    Color = "Yellow",
+                    Type = "Limousine",
+                    Year = 1990
+                }
+            );
+
+            modelBuilder.Entity<Reservation>().HasData(
+                new Reservation
+                {
+                    Id = 1,
+                    ClientId = 1,
+                    VehicleId = 1,
+                    ReservedFrom = new DateTime(2022, 08, 11, 09, 05, 00),
+                    ReservedUntil = new DateTime(2022, 08, 12, 09, 05, 00)
+                },
+                new Reservation
+                {
+                    Id = 2,
+                    ClientId = 1,
+                    VehicleId = 2,
+                    ReservedFrom = new DateTime(2022, 08, 11, 09, 05, 00),
+                    ReservedUntil = new DateTime(2022, 08, 12, 09, 05, 00)
+                }
+            );
             OnModelCreatingPartial(modelBuilder);
         }
 

@@ -4,6 +4,7 @@ using BlazorVehicleReservations.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorVehicleReservations.API.Migrations
 {
     [DbContext(typeof(VehicleReservationsContext))]
-    partial class VehicleReservationsContextModelSnapshot : ModelSnapshot
+    [Migration("20220811074303_StoredProcedure")]
+    partial class StoredProcedure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

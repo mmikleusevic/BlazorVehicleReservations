@@ -69,13 +69,43 @@ namespace BlazorVehicleReservations.API.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Client",
+                columns: new[] { "Id", "Country", "DOB", "FirstName", "Gender", "LastName" },
+                values: new object[,]
+                {
+                    { 1, "Croatia", new DateTime(2000, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Marko", "Male", "Marulić" },
+                    { 2, "Croatia", new DateTime(1995, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ivo", "Male", "Ivić" },
+                    { 3, "Croatia", new DateTime(1980, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alenko", "Male", "Alenić" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Vehicle",
+                columns: new[] { "Id", "Color", "Manufacturer", "Model", "Type", "Year" },
+                values: new object[,]
+                {
+                    { 1, "Black", "BMW", "Series 3", "Sedan", (short)2010 },
+                    { 2, "Red", "Ferrari", "Maranello", "Limousine", (short)1993 },
+                    { 3, "Yellow", "Lamborghini", "Diablo", "Limousine", (short)1990 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Reservation",
+                columns: new[] { "Id", "ClientId", "ReservedFrom", "ReservedUntil", "VehicleId" },
+                values: new object[] { 1, 1, new DateTime(2022, 8, 11, 9, 5, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 12, 9, 5, 0, 0, DateTimeKind.Unspecified), 1 });
+
+            migrationBuilder.InsertData(
+                table: "Reservation",
+                columns: new[] { "Id", "ClientId", "ReservedFrom", "ReservedUntil", "VehicleId" },
+                values: new object[] { 2, 1, new DateTime(2022, 8, 11, 9, 5, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 12, 9, 5, 0, 0, DateTimeKind.Unspecified), 2 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Reservation_ClientId",
                 table: "Reservation",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "Unique_Vehicle",
+                name: "IX_Reservation_VehicleId",
                 table: "Reservation",
                 column: "VehicleId",
                 unique: true);

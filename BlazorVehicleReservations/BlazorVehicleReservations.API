@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BlazorVehicleReservations.API</name>
+    </assembly>
+    <members>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetAllVehicles">
+            <summary>
+            Returns all vehicles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetVehicle(System.Int32)">
+            <summary>
+            Return a vehicle
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.CreateVehicle(BlazorVehicleReservations.Shared.Models.Dto.VehicleDto)">
+            <summary>
+            Creates a vehicle
+            </summary>
+            <param name="vehicle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.DeleteVehicle(System.Int32)">
+            <summary>
+            Deletes a vehicle
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.UpdateVehicle(BlazorVehicleReservations.Shared.Models.Dto.VehicleDto)">
+            <summary>
+            Updates a vehicle
+            </summary>
+            <param name="vehicle"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

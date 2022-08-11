@@ -1,11 +1,14 @@
 ﻿using BlazorVehicleReservations.API.Service;
 using BlazorVehicleReservations.Shared.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace BlazorVehicleReservations.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class VehicleController : Controller
     {
         private readonly IVehicleService _vehicleService;
@@ -16,18 +19,23 @@ namespace BlazorVehicleReservations.API.Controllers
             _logger = logger;
         }
 
-
+        /// <summary>
+        /// Returns all vehicles
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllVehicles()
         {
             try
             {
                 var result = await _vehicleService.GetAllVehicles();
-                if(result == null)
+                if(result.Any())
                 {
-                    return NotFound();
+                    return Ok(result);
                 }
-                return Ok(result);
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -35,7 +43,15 @@ namespace BlazorVehicleReservations.API.Controllers
                 return StatusCode(500);
             }
         }
+
+        /// <summary>
+        /// Return a vehicle
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetVehicle(int id)
         {
             try
@@ -57,7 +73,15 @@ namespace BlazorVehicleReservations.API.Controllers
             }
             
         }
+
+        /// <summary>
+        /// Creates a vehicle
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateVehicle(VehicleDto vehicle)
         {
             try
@@ -65,9 +89,10 @@ namespace BlazorVehicleReservations.API.Controllers
                 if (vehicle != null)
                 {
                     var result = await _vehicleService.CreateVehicle(vehicle);
-                    if (result != null)
+                    if (result != 0)
                     {
-                        return Created("/Created",result);
+                        //TODO
+                        return Created("da",result);
                     }
                 }
                 return BadRequest();
@@ -78,6 +103,66 @@ namespace BlazorVehicleReservations.API.Controllers
                 return StatusCode(500);
             }
 
+        }
+
+
+        /// <summary>
+        /// Deletes a vehicle
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    var result = await _vehicleService.DeleteVehicle(id);
+                    if(result != 0)
+                    {
+                        return NoContent();
+                    }
+                }
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+
+        /// <summary>
+        /// Updates a vehicle
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateVehicle(VehicleDto vehicle)
+        {
+            try
+            {
+                if (vehicle != null)
+                {
+                    var result = await _vehicleService.UpdateVehicle(vehicle);
+                    if (result != 0)
+                    {
+                        return NoContent();
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
     }
 }

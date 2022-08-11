@@ -4,32 +4,32 @@ namespace BlazorVehicleReservations.API.Service
 {
     public class ClientService : IClientService
     {
-        public async Task<ClientDto> CreateClient(ClientDto client)
+        public Task<int> CreateClient(ClientDto clientDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteClient(int id)
+        public Task<int> DeleteClient(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<ClientDto>> GetAllClients()
+        public Task<List<ClientDto>> GetAllClients()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ClientDto> GetClient(int id)
+        public Task<ClientDto> GetClient(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ClientDto>> SearchClient(ClientDto client)
+        public Task<IEnumerable<ClientDto>> SearchClient(ClientDto clientDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ClientDto> UpdateClient(ClientDto client)
+        public Task<int> UpdateClient(ClientDto clientDto)
         {
             throw new NotImplementedException();
         }

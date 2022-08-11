@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorVehicleReservations.API.Migrations
 {
     [DbContext(typeof(VehicleReservationsContext))]
-    [Migration("20220810182817_Initial")]
+    [Migration("20220811074215_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,35 @@ namespace BlazorVehicleReservations.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Client", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Country = "Croatia",
+                            Dob = new DateTime(2000, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Marko",
+                            Gender = "Male",
+                            LastName = "Marulić"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Country = "Croatia",
+                            Dob = new DateTime(1995, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Ivo",
+                            Gender = "Male",
+                            LastName = "Ivić"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Country = "Croatia",
+                            Dob = new DateTime(1980, 8, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Alenko",
+                            Gender = "Male",
+                            LastName = "Alenić"
+                        });
                 });
 
             modelBuilder.Entity("BlazorVehicleReservations.Shared.Reservation", b =>
@@ -81,10 +110,28 @@ namespace BlazorVehicleReservations.API.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex(new[] { "VehicleId" }, "Unique_Vehicle")
+                    b.HasIndex("VehicleId")
                         .IsUnique();
 
                     b.ToTable("Reservation", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClientId = 1,
+                            ReservedFrom = new DateTime(2022, 8, 11, 9, 5, 0, 0, DateTimeKind.Unspecified),
+                            ReservedUntil = new DateTime(2022, 8, 12, 9, 5, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClientId = 1,
+                            ReservedFrom = new DateTime(2022, 8, 11, 9, 5, 0, 0, DateTimeKind.Unspecified),
+                            ReservedUntil = new DateTime(2022, 8, 12, 9, 5, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = 2
+                        });
                 });
 
             modelBuilder.Entity("BlazorVehicleReservations.Shared.Vehicle", b =>
@@ -117,6 +164,35 @@ namespace BlazorVehicleReservations.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vehicle", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Color = "Black",
+                            Manufacturer = "BMW",
+                            Model = "Series 3",
+                            Type = "Sedan",
+                            Year = (short)2010
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Color = "Red",
+                            Manufacturer = "Ferrari",
+                            Model = "Maranello",
+                            Type = "Limousine",
+                            Year = (short)1993
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Color = "Yellow",
+                            Manufacturer = "Lamborghini",
+                            Model = "Diablo",
+                            Type = "Limousine",
+                            Year = (short)1990
+                        });
                 });
 
             modelBuilder.Entity("BlazorVehicleReservations.Shared.Reservation", b =>

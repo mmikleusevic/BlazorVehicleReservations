@@ -4,32 +4,32 @@ namespace BlazorVehicleReservations.API.Service
 {
     public class ReservationService : IReservationService
     {
-        public async Task<ReservationDto> CreateReservation(ReservationDto reservation)
+        public Task<int> CreateReservation(ReservationDto reservationDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteReservation(int id)
+        public Task<int> DeleteReservation(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<ReservationDto>> GetAllReservations()
+        public Task<List<ReservationDto>> GetAllReservations()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReservationDto> GetReservation(int id)
+        public Task<ReservationDto> GetReservation(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ReservationDto>> SearchReservation(ReservationDto reservation)
+        public Task<IEnumerable<ReservationDto>> SearchReservation(ReservationDto reservationDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ReservationDto> UpdateReservation(ReservationDto reservation)
+        public Task<int> UpdateReservation(ReservationDto reservationDto)
         {
             throw new NotImplementedException();
         }
