@@ -4,6 +4,76 @@
         <name>BlazorVehicleReservations.API</name>
     </assembly>
     <members>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.GetAllClients">
+            <summary>
+            Returns all clients
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.GetClient(System.Int32)">
+            <summary>
+            Return a client
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.CreateClient(BlazorVehicleReservations.Shared.Models.Dto.ClientDto)">
+            <summary>
+            Creates a client
+            </summary>
+            <param name="clientDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.DeleteClient(System.Int32)">
+            <summary>
+            Deletes a client
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.UpdateClient(BlazorVehicleReservations.Shared.Models.Dto.ClientDto,System.Int32)">
+            <summary>
+            Updates a client
+            </summary>
+            <param name="clientDto"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.GetAllReservations">
+            <summary>
+            Returns all reservations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.GetReservation(System.Int32)">
+            <summary>
+            Return a reservation
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.CreateReservation(BlazorVehicleReservations.Shared.Models.Dto.ReservationDto)">
+            <summary>
+            Creates a reservation
+            </summary>
+            <param name="reservationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.DeleteReservation(System.Int32)">
+            <summary>
+            Deletes a reservation
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.UpdateReservation(BlazorVehicleReservations.Shared.Models.Dto.ReservationDto,System.Int32)">
+            <summary>
+            Updates a reservation
+            </summary>
+            <param name="reservationDto"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetAllVehicles">
             <summary>
             Returns all vehicles
@@ -31,11 +101,12 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.UpdateVehicle(BlazorVehicleReservations.Shared.Models.Dto.VehicleDto)">
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.UpdateVehicle(BlazorVehicleReservations.Shared.Models.Dto.VehicleDto,System.Int32)">
             <summary>
             Updates a vehicle
             </summary>
             <param name="vehicleDto"></param>
+            <param name="id"></param>
             <returns></returns>
         </member>
     </members>

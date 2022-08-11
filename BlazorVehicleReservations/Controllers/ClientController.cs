@@ -9,30 +9,32 @@ namespace BlazorVehicleReservations.API.Controllers
     [Route("api/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
-    public class VehicleController : Controller
+    public class ClientController : Controller
     {
-        private readonly IVehicleService _vehicleService;
-        private readonly ILogger<VehicleController> _logger;
-        public VehicleController(IVehicleService vehicleService, ILogger<VehicleController> logger)
+        private readonly IClientService _clientService;
+        private readonly ILogger<ClientController> _logger;
+        public ClientController(
+            IClientService clientService,
+            ILogger<ClientController> logger)
         {
-            _vehicleService = vehicleService;
+            _clientService = clientService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Returns all vehicles
+        /// Returns all clients
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllVehicles()
+        public async Task<IActionResult> GetAllClients()
         {
             try
             {
-                var result = await _vehicleService.GetAllVehicles();
-                if(result.Any())
+                var result = await _clientService.GetAllClients();
+                if (result.Any())
                 {
                     return Ok(result);
                 }
@@ -46,7 +48,7 @@ namespace BlazorVehicleReservations.API.Controllers
         }
 
         /// <summary>
-        /// Return a vehicle
+        /// Return a client
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -54,13 +56,13 @@ namespace BlazorVehicleReservations.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetVehicle(int id)
+        public async Task<IActionResult> GetClient(int id)
         {
             try
             {
-                if(id != 0)
+                if (id != 0)
                 {
-                    var result = await _vehicleService.GetVehicle(id);
+                    var result = await _clientService.GetClient(id);
                     if (result != null)
                     {
                         return Ok(result);
@@ -73,25 +75,25 @@ namespace BlazorVehicleReservations.API.Controllers
                 _logger.LogError(ex.Message);
                 return StatusCode(500);
             }
-            
+
         }
 
         /// <summary>
-        /// Creates a vehicle
+        /// Creates a client
         /// </summary>
-        /// <param name="vehicleDto"></param>
+        /// <param name="clientDto"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateVehicle(VehicleDto vehicleDto)
+        public async Task<IActionResult> CreateClient(ClientDto clientDto)
         {
             try
             {
-                if (vehicleDto != null)
+                if (clientDto != null)
                 {
-                    var result = await _vehicleService.CreateVehicle(vehicleDto);
+                    var result = await _clientService.CreateClient(clientDto);
                     if (result != 0)
                     {
                         //TODO
@@ -110,7 +112,7 @@ namespace BlazorVehicleReservations.API.Controllers
 
 
         /// <summary>
-        /// Deletes a vehicle
+        /// Deletes a client
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -118,14 +120,14 @@ namespace BlazorVehicleReservations.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteVehicle(int id)
+        public async Task<IActionResult> DeleteClient(int id)
         {
             try
             {
                 if (id != 0)
                 {
-                    var result = await _vehicleService.DeleteVehicle(id);
-                    if(result != 0)
+                    var result = await _clientService.DeleteClient(id);
+                    if (result != 0)
                     {
                         return NoContent();
                     }
@@ -141,22 +143,22 @@ namespace BlazorVehicleReservations.API.Controllers
 
 
         /// <summary>
-        /// Updates a vehicle
+        /// Updates a client
         /// </summary>
-        /// <param name="vehicleDto"></param>
+        /// <param name="clientDto"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateVehicle(VehicleDto vehicleDto, int id)
+        public async Task<IActionResult> UpdateClient(ClientDto clientDto, int id)
         {
             try
             {
-                if (id == vehicleDto.VehicleId)
+                if (id == clientDto.ClientId)
                 {
-                    var result = await _vehicleService.UpdateVehicle(vehicleDto);
+                    var result = await _clientService.UpdateClient(clientDto);
                     if (result != 0)
                     {
                         return Ok();

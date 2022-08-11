@@ -16,6 +16,7 @@ namespace BlazorVehicleReservations.API.Mapper
             CreateMap<Client, ClientDto>()
                 .ForMember(dest => dest.LName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.FName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.Id))
                     .ReverseMap();
             CreateMap<Reservation, ReservationDto>()
                 .ForMember(dest => dest.ReservationId, opt => opt.MapFrom(src => src.Id))

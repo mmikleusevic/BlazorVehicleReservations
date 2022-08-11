@@ -29,7 +29,7 @@ namespace BlazorVehicleReservations.API.Service
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spCreateVehicle @Manufacturer, @Model, @Type, @Color, @Year",
                                                                 manufacturer, model, type, color, year);
-            
+
         }
 
         public async Task<int> DeleteVehicle(int id)
@@ -41,7 +41,7 @@ namespace BlazorVehicleReservations.API.Service
         public async Task<List<VehicleDto>> GetAllVehicles()
         {
             var result = await _context.Vehicles.FromSqlRaw("exec spGetAllVehicles").ToListAsync();
-            return _mapper.Map<List<VehicleDto>>(result);            
+            return _mapper.Map<List<VehicleDto>>(result);
         }
 
         public async Task<VehicleDto> GetVehicle(int id)

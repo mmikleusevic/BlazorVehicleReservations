@@ -204,8 +204,8 @@ namespace BlazorVehicleReservations.API.Migrations
             BEGIN
 	            SET NOCOUNT ON;
 
-	            SELECT r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
-		            c.LastName, c.DOB, c.Gender, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
+	            SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
+		            c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
 		            FROM Reservation r
 	            LEFT JOIN Client c
 		            ON r.ClientId = c.Id
@@ -280,8 +280,8 @@ namespace BlazorVehicleReservations.API.Migrations
             BEGIN
 	            SET NOCOUNT ON;
 
-	            SELECT r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
-		            c.LastName, c.DOB, c.Gender, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
+	            SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
+		            c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
 		            FROM Reservation r
 	            LEFT JOIN Client c
 		            ON r.ClientId = c.Id
