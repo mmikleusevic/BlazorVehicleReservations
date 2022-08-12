@@ -90,31 +90,38 @@ namespace BlazorVehicleReservations.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("Dob")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Manufacturer")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Model")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("ReservedFrom")
                         .HasColumnType("datetime2");
@@ -123,7 +130,8 @@ namespace BlazorVehicleReservations.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("VehicleId")
                         .HasColumnType("int");
@@ -158,8 +166,7 @@ namespace BlazorVehicleReservations.API.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("VehicleId")
-                        .IsUnique();
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("Reservation", (string)null);
 
@@ -252,8 +259,8 @@ namespace BlazorVehicleReservations.API.Migrations
                         .HasConstraintName("FK_Reservation_Client");
 
                     b.HasOne("BlazorVehicleReservations.Shared.Vehicle", "Vehicle")
-                        .WithOne("Reservation")
-                        .HasForeignKey("BlazorVehicleReservations.Shared.Reservation", "VehicleId")
+                        .WithMany("Reservations")
+                        .HasForeignKey("VehicleId")
                         .IsRequired()
                         .HasConstraintName("FK_Reservation_Vehicle");
 
@@ -269,8 +276,7 @@ namespace BlazorVehicleReservations.API.Migrations
 
             modelBuilder.Entity("BlazorVehicleReservations.Shared.Vehicle", b =>
                 {
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

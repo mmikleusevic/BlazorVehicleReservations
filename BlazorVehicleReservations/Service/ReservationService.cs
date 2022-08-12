@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using BlazorVehicleReservations.API.Context;
+using BlazorVehicleReservations.API.Service.Interface;
 using BlazorVehicleReservations.Shared;
 using BlazorVehicleReservations.Shared.Models.Dto;
+using BlazorVehicleReservations.Shared.Models.Search;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BlazorVehicleReservations.API.Service
 {
@@ -19,7 +22,23 @@ namespace BlazorVehicleReservations.API.Service
         }
         public async Task<int> CreateReservation(ReservationDto reservationDto)
         {
-            var result = await GetAllClientReservations(reservationDto.ClientId);
+            var resultList = await GetAllReservations();
+
+            // Asking is it already reserved and did the client reserve the same type already --- trebali smo izvuci Type u zasebnu tablicu da normaliziramo bazu
+            var isReservedOrSameType = resultList.Any(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.VehicleId == reservationDto.VehicleId
+                                                || a.Type == reservationDto.Type && a.ClientId == reservationDto.ClientId);
+
+            if (isReservedOrSameType)
+            {
+                return 0;
+            }
+
+            var isMoreThanThreeReserved = resultList.FindAll(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.ClientId == reservationDto.ClientId).Count;
+
+            if(isMoreThanThreeReserved >= 3)
+            {
+                return 0;
+            }
 
             var reservation = _mapper.Map<Reservation>(reservationDto);
 
@@ -51,15 +70,27 @@ namespace BlazorVehicleReservations.API.Service
             return _mapper.Map<ReservationDto>(result);
         }
 
-        public Task<List<ReservationDto>> GetAllClientReservations(int id)
+        public async Task<IEnumerable<ReservationDto>> SearchReservation(ReservationSearch reservationSearch)
         {
-            var clientId = new SqlParameter("@ClientId", id);
-            return Task.FromResult(_context.ReservationDtos.FromSqlRaw("exec spGetAllClientReservations @ClientId", clientId).ToList());
-        }
+            var reservedFrom = new SqlParameter("@ReservedFrom", reservationSearch.ReservedFrom);
+            var reservedUntil = new SqlParameter("@ReservedUntil", reservationSearch.ReservedUntil);
+            var firstName = new SqlParameter("@FirstName", reservationSearch.FirstName);
+            var lastName = new SqlParameter("@LastName", reservationSearch.LastName);
+            var dob = new SqlParameter("@Dob", reservationSearch.Dob);
+            var gender = new SqlParameter("@Gender", reservationSearch.Gender);
+            var country = new SqlParameter("@Country", reservationSearch.Country);
+            var manufacturer = new SqlParameter("@Manufacturer", reservationSearch.Manufacturer);
+            var model = new SqlParameter("@Model", reservationSearch.Model);
+            var type = new SqlParameter("@Type", reservationSearch.Type);
+            var color = new SqlParameter("@Color", reservationSearch.Color);
+            var year = new SqlParameter("@Year", reservationSearch.Year);
 
-        public async Task<IEnumerable<ReservationDto>> SearchReservation(ReservationDto reservationDto)
-        {
-            throw new NotImplementedException();
+            var resultList = await _context.ReservationDtos.FromSqlRaw($"exec spSearchReservation @ReservedFrom, @ReservedUntil, @FirstName, @LastName, @Dob,"+
+                                                                    $"@Gender, @Country, @Manufacturer, @Model, @Type, @Color, @Year",
+                                                                    reservedFrom, reservedUntil, firstName, lastName, dob, gender, country, manufacturer,
+                                                                    model, type, color, year).ToListAsync();
+
+            return _mapper.Map<IEnumerable<ReservationDto>>(resultList);
         }
 
         public async Task<int> UpdateReservation(ReservationDto reservationDto)

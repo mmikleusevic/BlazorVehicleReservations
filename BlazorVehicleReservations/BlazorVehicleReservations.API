@@ -4,6 +4,13 @@
         <name>BlazorVehicleReservations.API</name>
     </assembly>
     <members>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.SearchClient(BlazorVehicleReservations.Shared.Models.Search.ClientSearch)">
+            <summary>
+            Searches clients by parameters
+            </summary>
+            <param name="clientSearch"></param>
+            <returns></returns>
+        </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.ClientController.GetAllClients">
             <summary>
             Returns all clients
@@ -39,6 +46,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.SearchReservation(BlazorVehicleReservations.Shared.Models.Search.ReservationSearch)">
+            <summary>
+            Searches Reservations by parameters
+            </summary>
+            <param name="reservationSearch"></param>
+            <returns></returns>
+        </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.GetAllReservations">
             <summary>
             Returns all reservations
@@ -72,6 +86,13 @@
             </summary>
             <param name="reservationDto"></param>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.SearchVehicle(BlazorVehicleReservations.Shared.Models.Search.VehicleSearch)">
+            <summary>
+            Searches vehicles by parameters
+            </summary>
+            <param name="vehicleSearch"></param>
             <returns></returns>
         </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetAllVehicles">

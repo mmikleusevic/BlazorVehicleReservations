@@ -62,8 +62,8 @@ namespace BlazorVehicleReservations.API.Context
                     .HasConstraintName("FK_Reservation_Client");
 
                 entity.HasOne(d => d.Vehicle)
-                    .WithOne(p => p.Reservation)
-                    .HasForeignKey<Reservation>(d => d.VehicleId)
+                    .WithMany(p => p.Reservations)
+                    .HasForeignKey(d => d.VehicleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Reservation_Vehicle");
             });

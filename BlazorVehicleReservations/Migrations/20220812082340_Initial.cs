@@ -107,8 +107,7 @@ namespace BlazorVehicleReservations.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Reservation_VehicleId",
                 table: "Reservation",
-                column: "VehicleId",
-                unique: true);
+                column: "VehicleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,5 +1,6 @@
-﻿using BlazorVehicleReservations.API.Service;
+﻿using BlazorVehicleReservations.API.Service.Interface;
 using BlazorVehicleReservations.Shared.Models.Dto;
+using BlazorVehicleReservations.Shared.Models.Search;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
@@ -19,6 +20,33 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             _reservationService = reservationService;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Searches Reservations by parameters
+        /// </summary>
+        /// <param name="reservationSearch"></param>
+        /// <returns></returns>
+        [HttpPost("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SearchReservation(ReservationSearch reservationSearch)
+        {
+            try
+            {
+                var result = await _reservationService.SearchReservation(reservationSearch);
+                if (result.Any())
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         /// <summary>

@@ -2,6 +2,7 @@ using AutoMapper;
 using BlazorVehicleReservations.API.Context;
 using BlazorVehicleReservations.API.Mapper;
 using BlazorVehicleReservations.API.Service;
+using BlazorVehicleReservations.API.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;

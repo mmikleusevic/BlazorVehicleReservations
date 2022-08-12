@@ -1,10 +1,11 @@
 ﻿using BlazorVehicleReservations.Shared.Models.Dto;
+using BlazorVehicleReservations.Shared.Models.Search;
 
-namespace BlazorVehicleReservations.API.Service
+namespace BlazorVehicleReservations.API.Service.Interface
 {
     public interface IVehicleService
     {
-        Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleDto vehicleDto);
+        Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleSearch vehicleSearch);
         Task<List<VehicleDto>> GetAllVehicles();
         Task<VehicleDto> GetVehicle(int id);
         Task<int> CreateVehicle(VehicleDto vehicleDto);

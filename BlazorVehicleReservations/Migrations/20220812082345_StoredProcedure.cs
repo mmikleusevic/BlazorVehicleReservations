@@ -4,7 +4,7 @@
 
 namespace BlazorVehicleReservations.API.Migrations
 {
-    public partial class StoredProcedures : Migration
+    public partial class StoredProcedure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -133,33 +133,7 @@ namespace BlazorVehicleReservations.API.Migrations
 
 	                                DELETE FROM Vehicle WHERE Id = @VehicleId
                                 END
-                    GO
-
-                    SET ANSI_NULLS ON
-                    GO
-                    SET QUOTED_IDENTIFIER ON
-                    GO
-                    -- =============================================
-                                -- Author:		Marin Mikleušević
-                                -- Create date: 11.8.2022 09:49
-                                -- Description:	Select all client reservations
-                                -- =============================================
-                                CREATE PROCEDURE [dbo].[spGetAllClientReservations]
-	                                @ClientId int
-                                AS
-                                BEGIN
-	                                SET NOCOUNT ON;
-
-	                                SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
-		                                c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]
-		                                FROM Reservation r
-	                                LEFT JOIN Client c
-		                                ON r.ClientId = c.Id
-	                                LEFT JOIN Vehicle v
-		                                ON r.VehicleId = v.Id
-	                                WHERE r.ClientId = @ClientId
-                                END
-                    GO
+                    GO                  
 
                     SET ANSI_NULLS ON
                     GO
@@ -292,19 +266,21 @@ namespace BlazorVehicleReservations.API.Migrations
 
                     SET ANSI_NULLS ON
                     GO
+
                     SET QUOTED_IDENTIFIER ON
                     GO
+
                     -- =============================================
                                 -- Author:		Marin Mikleušević
                                 -- Create date: 11.8.2022 08:34
                                 -- Description:	search for clients
                                 -- =============================================
                                 CREATE PROCEDURE [dbo].[spSearchClient]
-	                                @FirstName nvarchar(50) = '',
-	                                @LastName nvarchar(100) = '',
-	                                @DOB nvarchar(50) = '',
-	                                @Gender nvarchar(50) = '',
-	                                @Country nvarchar(100) = ''
+	                                @FirstName nvarchar(20) = '',
+	                                @LastName nvarchar(20) = '',
+	                                @DOB nvarchar(10) = '',
+	                                @Gender nvarchar(20) = '',
+	                                @Country nvarchar(20) = ''
                                 AS
                                 BEGIN
 	                                SET NOCOUNT ON;
@@ -322,36 +298,42 @@ namespace BlazorVehicleReservations.API.Migrations
 
                     SET ANSI_NULLS ON
                     GO
+
                     SET QUOTED_IDENTIFIER ON
                     GO
+
                     -- =============================================
                                 -- Author:		Marin Mikleušević
                                 -- Create date: 11.8.2022 08:35
                                 -- Description:	search for reservations
                                 -- =============================================
                                 CREATE PROCEDURE [dbo].[spSearchReservation]
-	                                @Manufacturer nvarchar(100) = '',
-	                                @Model nvarchar(100) = '',
-	                                @Type nvarchar(50) = '',
-	                                @Color nvarchar(50) = '',
-	                                @Year nvarchar(4) = '',
-	                                @FirstName nvarchar(50) = '',
-	                                @LastName nvarchar(100) = '',
-	                                @DOB nvarchar(50) = '',
-	                                @Gender nvarchar(50) = '',
-	                                @Country nvarchar(100) = '',
 	                                @ReservedFrom nvarchar(10) = '',
-	                                @ReservedUntil nvarchar(10) = ''
+	                                @ReservedUntil nvarchar(10) = '',
+	                                @FirstName nvarchar(20) = '',
+	                                @LastName nvarchar(20) = '',
+	                                @DOB nvarchar(10) = '',
+	                                @Gender nvarchar(20) = '',
+	                                @Country nvarchar(20) = '',
+	                                @Manufacturer nvarchar(20) = '',
+	                                @Model nvarchar(20) = '',
+	                                @Type nvarchar(20) = '',
+	                                @Color nvarchar(20) = '',
+	                                @Year nvarchar(4) = ''
                                 AS
                                 BEGIN
 	                                SET NOCOUNT ON;
 
-	                                SELECT * FROM dbo.Reservation r
+	                                SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
+		                                c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
+									FROM dbo.Reservation r
 		                                LEFT JOIN dbo.Client c
 	                                ON c.Id = r.ClientId
 		                                LEFT JOIN dbo.Vehicle v
 	                                ON v.Id = r.VehicleId
 	                                WHERE 
+		                                ISNULL(r.ReservedFrom,'') like '%'+@ReservedFrom+'%' AND
+		                                ISNULL(r.ReservedUntil,'') like '%'+@ReservedUntil+'%' AND
 		                                ISNULL(c.FirstName,'') like '%'+@FirstName+'%' AND
 		                                ISNULL(c.LastName,'') like '%'+@LastName+'%' AND
 		                                ISNULL(c.DOB,'') like '%'+@DOB+'%' AND
@@ -361,27 +343,27 @@ namespace BlazorVehicleReservations.API.Migrations
 		                                ISNULL(v.Model,'') like '%'+@Model+'%' AND
 		                                ISNULL(v.[Type],'') like '%'+@Type+'%' AND
 		                                ISNULL(v.Color,'') like '%'+@Color+'%' AND
-		                                ISNULL(v.[Year],'') like '%'+@Year+'%' AND
-		                                ISNULL(r.ReservedFrom,'') like '%'+@ReservedFrom+'%' AND
-		                                ISNULL(r.ReservedUntil,'') like '%'+@ReservedUntil+'%'
+		                                ISNULL(v.[Year],'') like '%'+@Year+'%'
 	                                ORDER BY r.Id ASC
                                 END
                     GO
 
                     SET ANSI_NULLS ON
                     GO
+
                     SET QUOTED_IDENTIFIER ON
                     GO
+
                     -- =============================================
                                 -- Author:		Marin Mikleušević
                                 -- Create date: 11.8.2022 08:43
                                 -- Description:	search for vehicles
                                 -- =============================================
                                 CREATE PROCEDURE [dbo].[spSearchVehicle]
-	                                @Manufacturer nvarchar(100) = '',
-	                                @Model nvarchar(100) = '',
-	                                @Type nvarchar(50) = '',
-	                                @Color nvarchar(50) = '',
+	                                @Manufacturer nvarchar(20) = '',
+	                                @Model nvarchar(20) = '',
+	                                @Type nvarchar(20) = '',
+	                                @Color nvarchar(20) = '',
 	                                @Year nvarchar(4) = ''
                                 AS
                                 BEGIN

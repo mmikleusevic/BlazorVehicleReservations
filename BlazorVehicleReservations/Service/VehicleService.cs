@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BlazorVehicleReservations.API.Context;
+using BlazorVehicleReservations.API.Service.Interface;
 using BlazorVehicleReservations.Shared;
 using BlazorVehicleReservations.Shared.Models.Dto;
+using BlazorVehicleReservations.Shared.Models.Search;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,9 +54,18 @@ namespace BlazorVehicleReservations.API.Service
             return _mapper.Map<VehicleDto>(result);
         }
 
-        public async Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleDto vehicleDto)
+        public async Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleSearch vehicleSearch)
         {
-            throw new NotImplementedException();
+            var manufacturer = new SqlParameter("@Manufacturer", vehicleSearch.Manufacturer);
+            var model = new SqlParameter("@Model", vehicleSearch.Model);
+            var type = new SqlParameter("@Type", vehicleSearch.Type);
+            var color = new SqlParameter("@Color", vehicleSearch.Color);
+            var year = new SqlParameter("@Year", vehicleSearch.Year);
+
+            var resultList = await _context.Vehicles.FromSqlRaw("exec spSearchVehicle @Manufacturer, @Model, @Type, @Color, @Year",
+                                                                 manufacturer, model, type, color, year).ToListAsync();
+
+            return _mapper.Map<IEnumerable<VehicleDto>>(resultList);
         }
 
         public async Task<int> UpdateVehicle(VehicleDto vehicleDto)
