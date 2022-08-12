@@ -22,33 +22,21 @@ namespace BlazorVehicleReservations.API.Service
         }
         public async Task<int> CreateReservation(ReservationDto reservationDto)
         {
-            var resultList = await GetAllReservations();
+            var result = await CanVehicleBeReserved(reservationDto);
 
-            // Asking is it already reserved and did the client reserve the same type already --- trebali smo izvuci Type u zasebnu tablicu da normaliziramo bazu
-            var isReservedOrSameType = resultList.Any(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.VehicleId == reservationDto.VehicleId
-                                                || a.Type == reservationDto.Type && a.ClientId == reservationDto.ClientId);
-
-            if (isReservedOrSameType)
+            if (result)
             {
-                return 0;
+                var reservation = _mapper.Map<Reservation>(reservationDto);
+
+                var clientId = new SqlParameter("@ClientId", reservation.ClientId);
+                var vehicleId = new SqlParameter("@VehicleId", reservation.VehicleId);
+                var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
+                var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
+
+                return await _context.Database.ExecuteSqlRawAsync($"exec spCreateReservation @ClientId, @VehicleId, @ReservedFrom, @ReservedUntil",
+                                                                    clientId, vehicleId, reservedFrom, reservedUntil);
             }
-
-            var isMoreThanThreeReserved = resultList.FindAll(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.ClientId == reservationDto.ClientId).Count;
-
-            if(isMoreThanThreeReserved >= 3)
-            {
-                return 0;
-            }
-
-            var reservation = _mapper.Map<Reservation>(reservationDto);
-
-            var clientId = new SqlParameter("@ClientId", reservation.ClientId);
-            var vehicleId = new SqlParameter("@VehicleId", reservation.VehicleId);
-            var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
-            var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
-
-            return await _context.Database.ExecuteSqlRawAsync($"exec spCreateReservation @ClientId, @VehicleId, @ReservedFrom, @ReservedUntil",
-                                                                clientId, vehicleId, reservedFrom, reservedUntil);
+            return 0;
         }
 
         public async Task<int> DeleteReservation(int id)
@@ -103,6 +91,30 @@ namespace BlazorVehicleReservations.API.Service
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateReservation @ReservationId, @ReservedFrom, @ReservedUntil",
                                                                 reservationId, reservedFrom, reservedUntil);
+        }
+
+        public async Task<bool> CanVehicleBeReserved(ReservationDto reservationDto)
+        {
+            var resultList = await GetAllReservations();
+
+            //Asking is it already reserved and did the client reserve the same type already --- trebali smo izvuci Type u zasebnu tablicu da normaliziramo bazu
+            var isReservedOrSameTypeOfVehicle = resultList.Any(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.VehicleId == reservationDto.VehicleId
+                                                || a.Type == reservationDto.Type && a.ClientId == reservationDto.ClientId);
+
+            if (isReservedOrSameTypeOfVehicle)
+            {
+                return false;
+            }
+
+            //Number of cars client currently rents
+            var clientNumberOfVehiclesRentedCurrently = resultList.FindAll(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.ClientId == reservationDto.ClientId).Count;
+
+            if (clientNumberOfVehiclesRentedCurrently >= 3)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
