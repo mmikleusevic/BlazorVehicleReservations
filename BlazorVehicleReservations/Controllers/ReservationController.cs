@@ -76,6 +76,32 @@ namespace BlazorVehicleReservations.API.Controllers
         }
 
         /// <summary>
+        /// Gets all current reservations
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("current")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllCurrentReservations()
+        {
+            try
+            {
+                var result = await _reservationService.GetAllCurrentReservations();
+                if (result.Any())
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        /// <summary>
         /// Return a reservation
         /// </summary>
         /// <param name="id"></param>
@@ -88,7 +114,7 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             try
             {
-                if (id != 0)
+                if (id > 0)
                 {
                     var result = await _reservationService.GetReservation(id);
                     if (result != null)
@@ -122,7 +148,7 @@ namespace BlazorVehicleReservations.API.Controllers
                 if (reservationDto != null)
                 {
                     var result = await _reservationService.CreateReservation(reservationDto);
-                    if (result != 0)
+                    if (result == 1)
                     {
                         //TODO
                         return Created("da", result);
@@ -152,10 +178,10 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             try
             {
-                if (id != 0)
+                if (id > 0)
                 {
                     var result = await _reservationService.DeleteReservation(id);
-                    if (result != 0)
+                    if (result == 1)
                     {
                         return NoContent();
                     }
@@ -188,7 +214,7 @@ namespace BlazorVehicleReservations.API.Controllers
                 if (id == reservationDto.Id)
                 {
                     var result = await _reservationService.UpdateReservation(reservationDto);
-                    if (result != 0)
+                    if (result == 1)
                     {
                         return Ok();
                     }

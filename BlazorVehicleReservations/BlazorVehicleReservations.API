@@ -59,6 +59,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.GetAllCurrentReservations">
+            <summary>
+            Gets all current reservations
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.ReservationController.GetReservation(System.Int32)">
             <summary>
             Return a reservation

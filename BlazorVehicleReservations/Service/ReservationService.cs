@@ -95,11 +95,11 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<bool> CanVehicleBeReserved(ReservationDto reservationDto)
         {
-            var resultList = await GetAllReservations();
+            var resultList = await GetAllCurrentReservations();
 
-            //Asking is it already reserved and did the client reserve the same type already --- trebali smo izvuci Type u zasebnu tablicu da normaliziramo bazu
-            var isReservedOrSameTypeOfVehicle = resultList.Any(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.VehicleId == reservationDto.VehicleId
-                                                || a.Type == reservationDto.Type && a.ClientId == reservationDto.ClientId);
+            //Asking is it already reserved and did the client reserve the same type already
+            var isReservedOrSameTypeOfVehicle = resultList.Any(a => a.VehicleId == reservationDto.VehicleId 
+                                                            || a.Type == reservationDto.Type && a.ClientId == reservationDto.ClientId);
 
             if (isReservedOrSameTypeOfVehicle)
             {
@@ -107,7 +107,7 @@ namespace BlazorVehicleReservations.API.Service
             }
 
             //Number of cars client currently rents
-            var clientNumberOfVehiclesRentedCurrently = resultList.FindAll(a => a.ReservedUntil >= DateTime.UtcNow.AddHours(2) && a.ClientId == reservationDto.ClientId).Count;
+            var clientNumberOfVehiclesRentedCurrently = resultList.FindAll(a => a.ClientId == reservationDto.ClientId).Count;
 
             if (clientNumberOfVehiclesRentedCurrently >= 3)
             {
@@ -115,6 +115,11 @@ namespace BlazorVehicleReservations.API.Service
             }
 
             return true;
+        }
+
+        public async Task<List<ReservationDto>> GetAllCurrentReservations()
+        {
+            return await _context.ReservationDtos.FromSqlRaw("exec spGetAllCurrentReservations").ToListAsync();
         }
     }
 }

@@ -87,7 +87,7 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             try
             {
-                if(id != 0)
+                if(id > 0)
                 {
                     var result = await _vehicleService.GetVehicle(id);
                     if (result != null)
@@ -121,7 +121,7 @@ namespace BlazorVehicleReservations.API.Controllers
                 if (vehicleDto != null)
                 {
                     var result = await _vehicleService.CreateVehicle(vehicleDto);
-                    if (result != 0)
+                    if (result == 1)
                     {
                         //TODO
                         return Created("da", result);
@@ -151,10 +151,10 @@ namespace BlazorVehicleReservations.API.Controllers
         {
             try
             {
-                if (id != 0)
+                if (id > 0)
                 {
                     var result = await _vehicleService.DeleteVehicle(id);
-                    if(result != 0)
+                    if(result == 1)
                     {
                         return NoContent();
                     }
@@ -187,7 +187,7 @@ namespace BlazorVehicleReservations.API.Controllers
                 if (id == vehicleDto.VehicleId)
                 {
                     var result = await _vehicleService.UpdateVehicle(vehicleDto);
-                    if (result != 0)
+                    if (result == 1)
                     {
                         return Ok();
                     }

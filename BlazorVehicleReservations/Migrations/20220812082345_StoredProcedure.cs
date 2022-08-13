@@ -185,6 +185,33 @@ namespace BlazorVehicleReservations.API.Migrations
                     GO
                     -- =============================================
                                 -- Author:		Marin Mikleušević
+                                -- Create date: 13.8.2022 09:41
+                                -- Description:	Select all reservations
+                                -- =============================================
+                                CREATE PROCEDURE [dbo].[spGetAllCurrentReservations]
+                                AS
+                                BEGIN
+	                                SET NOCOUNT ON;
+
+	                                SELECT r.Id, r.ClientId, r.VehicleId, r.ReservedFrom, r.ReservedUntil, c.FirstName,
+		                                c.LastName, c.DOB, c.Gender, c.Country, v.Manufacturer, v.Model, v.[Type], v.Color, v.[Year]  
+		                                FROM Reservation r
+	                                LEFT JOIN Client c
+		                                ON r.ClientId = c.Id
+	                                LEFT JOIN Vehicle v
+		                                ON r.VehicleId = v.Id
+                                    WHERE r.ReservedUntil >= GETDATE()
+	                                ORDER BY r.Id ASC
+                                END
+                    GO
+
+
+                    SET ANSI_NULLS ON
+                    GO
+                    SET QUOTED_IDENTIFIER ON
+                    GO
+                    -- =============================================
+                                -- Author:		Marin Mikleušević
                                 -- Create date: 11.8.2022 08:28
                                 -- Description:	Basic select all
                                 -- =============================================
