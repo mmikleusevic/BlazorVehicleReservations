@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorVehicleReservations.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorVehicleReservations.Shared", "BlazorVehicleReservations.Shared\BlazorVehicleReservations.Shared.csproj", "{1DCA8B5F-2997-4902-B393-A61E5797C7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorVehicleReservations.Tests", "BlazorVehicleReservations.Tests\BlazorVehicleReservations.Tests.csproj", "{B2542AEF-DE42-48C9-9B8E-035F503812D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorVehicleReservations.Tests", "BlazorVehicleReservations.Tests\BlazorVehicleReservations.Tests.csproj", "{B2542AEF-DE42-48C9-9B8E-035F503812D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

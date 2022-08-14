@@ -74,6 +74,33 @@ namespace BlazorVehicleReservations.API.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Returns all available vehicles
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("available")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllAvailableVehicles()
+        {
+            try
+            {
+                var result = await _vehicleService.GetAllAvailableVehicles();
+                if (result.Any())
+                {
+                    return Ok(result);
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
         /// <summary>
         /// Return a vehicle
         /// </summary>

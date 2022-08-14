@@ -12,5 +12,6 @@ namespace BlazorVehicleReservations.API.Service.Interface
         Task<int> CreateReservation(ReservationDto reservationDto);
         Task<int> UpdateReservation(ReservationDto reservationDto);
         Task<int> DeleteReservation(int id);
+        Task<bool> CanVehicleBeReserved(ReservationDto reservationDto);
     }
 }

@@ -7,6 +7,7 @@ namespace BlazorVehicleReservations.API.Service.Interface
     {
         Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleSearch vehicleSearch);
         Task<List<VehicleDto>> GetAllVehicles();
+        Task<List<VehicleDto>> GetAllAvailableVehicles();
         Task<VehicleDto> GetVehicle(int id);
         Task<int> CreateVehicle(VehicleDto vehicleDto);
         Task<int> UpdateVehicle(VehicleDto vehicleDto);

@@ -40,6 +40,12 @@ namespace BlazorVehicleReservations.API.Service
             return await _context.Database.ExecuteSqlRawAsync("exec spDeleteVehicle @VehicleId", vehicleId);
         }
 
+        public async Task<List<VehicleDto>> GetAllAvailableVehicles()
+        {
+            var result = await _context.Vehicles.FromSqlRaw("exec spGetAllAvailableVehicles").ToListAsync();
+            return _mapper.Map<List<VehicleDto>>(result);
+        }
+
         public async Task<List<VehicleDto>> GetAllVehicles()
         {
             var result = await _context.Vehicles.FromSqlRaw("exec spGetAllVehicles").ToListAsync();

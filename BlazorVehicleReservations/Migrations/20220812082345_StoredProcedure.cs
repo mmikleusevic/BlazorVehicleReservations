@@ -133,7 +133,33 @@ namespace BlazorVehicleReservations.API.Migrations
 
 	                                DELETE FROM Vehicle WHERE Id = @VehicleId
                                 END
-                    GO                  
+                    GO 
+
+
+                    SET ANSI_NULLS ON
+                    GO
+                    SET QUOTED_IDENTIFIER ON
+                    GO
+                    -- =============================================
+                                 -- Author:		Marin Mikleušević
+                                 -- Create date: 13.8.2022 09:41
+                                 -- Description:	Select all available vehicles
+                                 -- =============================================
+                                 CREATE PROCEDURE [dbo].[spGetAllAvailableVehicles]
+                                 AS
+                                 BEGIN
+	                                SET NOCOUNT ON;
+
+	                                SELECT * FROM Vehicle v 
+										  WHERE v.Id NOT IN( 
+											    SELECT v.Id
+												      FROM Reservation r
+											    LEFT JOIN Vehicle v
+												      ON r.VehicleId = v.Id
+											    WHERE r.ReservedFrom <= GETDATE() AND r.ReservedUntil >= GETDATE()
+									) 
+                                  END
+                    GO
 
                     SET ANSI_NULLS ON
                     GO
@@ -186,7 +212,7 @@ namespace BlazorVehicleReservations.API.Migrations
                     -- =============================================
                                 -- Author:		Marin Mikleušević
                                 -- Create date: 13.8.2022 09:41
-                                -- Description:	Select all reservations
+                                -- Description:	Select all current reservations
                                 -- =============================================
                                 CREATE PROCEDURE [dbo].[spGetAllCurrentReservations]
                                 AS

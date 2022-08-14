@@ -107,6 +107,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetAllAvailableVehicles">
+            <summary>
+            Returns all available vehicles
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:BlazorVehicleReservations.API.Controllers.VehicleController.GetVehicle(System.Int32)">
             <summary>
             Return a vehicle

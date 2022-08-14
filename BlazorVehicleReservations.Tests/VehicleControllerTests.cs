@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorVehicleReservations.Tests
 {
-    public class VehicleServiceTests
+    public class VehicleControllerTests
     {
         [Fact]
         public async Task CreateVehicle_Returns_One_Inserted_Row()
@@ -111,6 +111,59 @@ namespace BlazorVehicleReservations.Tests
 
             //Act
             var actionResult = await controller.GetAllVehicles();
+
+            //Assert
+            var result = Assert.IsType<StatusCodeResult>(actionResult);
+            Assert.Equal(500, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllAvailableVehicles_Returns_Populated_List()
+        {
+            //Arrange
+            var fakeLogger = A.Fake<ILogger<VehicleController>>();
+            var fakeVehicleService = A.Fake<IVehicleService>();
+            var fakeDummyList = A.CollectionOfFake<VehicleDto>(3).ToList();
+            A.CallTo(() => fakeVehicleService.GetAllAvailableVehicles()).Returns(Task.FromResult(fakeDummyList));
+            var controller = new VehicleController(fakeVehicleService, fakeLogger);
+
+            //Act
+            var actionResult = await controller.GetAllAvailableVehicles();
+
+            //Assert
+            var result = Assert.IsType<OkObjectResult>(actionResult);
+            Assert.Equal(200, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllAvailableVehicles_Returns_Zero_Rows()
+        {
+            //Arrange
+            var fakeLogger = A.Fake<ILogger<VehicleController>>();
+            var fakeVehicleService = A.Fake<IVehicleService>();
+            var fakeDummyList = A.CollectionOfFake<VehicleDto>(0).ToList();
+            A.CallTo(() => fakeVehicleService.GetAllAvailableVehicles()).Returns(Task.FromResult(fakeDummyList));
+            var controller = new VehicleController(fakeVehicleService, fakeLogger);
+
+            //Act
+            var actionResult = await controller.GetAllAvailableVehicles();
+
+            //Assert
+            var result = Assert.IsType<NotFoundResult>(actionResult);
+            Assert.Equal(404, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllAvailableVehicles_Throws_Exception()
+        {
+            //Arrange
+            var fakeLogger = A.Fake<ILogger<VehicleController>>();
+            var fakeVehicleService = A.Fake<IVehicleService>();
+            A.CallTo(() => fakeVehicleService.GetAllAvailableVehicles()).Throws(new Exception());
+            var controller = new VehicleController(fakeVehicleService, fakeLogger);
+
+            //Act
+            var actionResult = await controller.GetAllAvailableVehicles();
 
             //Assert
             var result = Assert.IsType<StatusCodeResult>(actionResult);
@@ -342,7 +395,6 @@ namespace BlazorVehicleReservations.Tests
             var fakeLogger = A.Fake<ILogger<VehicleController>>();
             var fakeVehicleService = A.Fake<IVehicleService>();
             var fakeDummySearch = A.Fake<VehicleSearch>();
-            var fakeDummyList = A.CollectionOfFake<VehicleDto>(0).AsEnumerable();
             A.CallTo(() => fakeVehicleService.SearchVehicle(fakeDummySearch)).Throws(new Exception());
             var controller = new VehicleController(fakeVehicleService, fakeLogger);
 
