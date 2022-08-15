@@ -1,0 +1,64 @@
+﻿@page "/"
+
+<h3>Reservations</h3>
+@if(messageResultList == null){
+    <p>Loading...</p>
+}
+else if(messageResultList != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col">Reserved from</th>
+                <th class="col">Reserved until</th>
+                <th class="col">First Name</th>
+                <th class="col">Last Name</th>
+                <th class="col">Dob</th>
+                <th class="col">Gender</th>
+                <th class="col">Country</th>
+                <th class="col">Manufacturer</th>
+                <th class="col">Model</th>
+                <th class="col">Type</th>
+                <th class="col">Color</th>
+                <th class="col">Year</th>
+                <th class="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in messageResultList.Data)
+            {
+                <tr>
+                    <td>@data.ReservedFrom.ToShortDateString()</td>
+                    <td>@data.ReservedUntil.ToShortDateString()</td>
+                    <td>@data.FirstName</td>
+                    <td>@data.LastName</td>
+                    <td>@data.Dob.Value.ToShortDateString()</td>
+                    <td>@data.Gender</td>
+                    <td>@data.Country</td>
+                    <td>@data.Manufacturer</td>
+                    <td>@data.Model</td>
+                    <td>@data.Type</td>
+                    <td>@data.Color</td>
+                    <td>@data.Year</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger"><i class="oi oi-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Inject]
+    private IReservationService ReservationService { get; set; } = default!;
+
+    private MessageResult<List<ReservationDto>> messageResultList { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResultList = await ReservationService.GetAllReservations();
+    }
+}

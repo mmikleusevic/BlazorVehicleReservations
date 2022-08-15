@@ -1,4 +1,4 @@
-﻿namespace BlazorVehicleReservations.Shared
+﻿namespace BlazorVehicleReservations.API.Models
 {
     public partial class Vehicle
     {

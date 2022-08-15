@@ -340,11 +340,11 @@ namespace BlazorVehicleReservations.API.Migrations
 
 	                                Select * FROM dbo.Client
 	                                WHERE
-		                                ISNULL(FirstName,'') like '%'+@FirstName+'%' AND
-		                                ISNULL(LastName,'') like '%'+@LastName+'%' AND
-		                                ISNULL(DOB,'') like '%'+@DOB+'%' AND
-		                                ISNULL(Gender,'') like '%'+@Gender+'%' AND
-		                                ISNULL(Country,'') like '%'+@Country+'%'
+		                                ISNULL(FirstName,'') like '%'+ISNULL(@FirstName,'')+'%' AND
+		                                ISNULL(LastName,'') like '%'+ISNULL(@LastName,'')+'%' AND
+		                                ISNULL(DOB,'') like '%'+ISNULL(@DOB,'')+'%' AND
+		                                ISNULL(Gender,'') like '%'+ISNULL(@Gender,'')+'%' AND
+		                                ISNULL(Country,'') like '%'+ISNULL(@Country,'')+'%'
 	                                ORDER BY Id ASC
                                 END
                     GO
@@ -385,18 +385,18 @@ namespace BlazorVehicleReservations.API.Migrations
 		                                LEFT JOIN dbo.Vehicle v
 	                                ON v.Id = r.VehicleId
 	                                WHERE 
-		                                ISNULL(r.ReservedFrom,'') like '%'+@ReservedFrom+'%' AND
-		                                ISNULL(r.ReservedUntil,'') like '%'+@ReservedUntil+'%' AND
-		                                ISNULL(c.FirstName,'') like '%'+@FirstName+'%' AND
-		                                ISNULL(c.LastName,'') like '%'+@LastName+'%' AND
-		                                ISNULL(c.DOB,'') like '%'+@DOB+'%' AND
-		                                ISNULL(c.Gender,'') like '%'+@Gender+'%' AND
-		                                ISNULL(c.Country,'') like '%'+@Country+'%' AND
-		                                ISNULL(v.Manufacturer,'') like '%'+@Manufacturer+'%' AND
-		                                ISNULL(v.Model,'') like '%'+@Model+'%' AND
-		                                ISNULL(v.[Type],'') like '%'+@Type+'%' AND
-		                                ISNULL(v.Color,'') like '%'+@Color+'%' AND
-		                                ISNULL(v.[Year],'') like '%'+@Year+'%'
+		                                ISNULL(r.ReservedFrom,'') like '%'+ISNULL(@ReservedFrom,'')+'%' AND
+		                                ISNULL(r.ReservedUntil,'') like '%'+ISNULL(@ReservedUntil,'')+'%' AND
+		                                ISNULL(c.FirstName,'') like '%'+ISNULL(@FirstName,'')+'%' AND
+		                                ISNULL(c.LastName,'') like '%'+ISNULL(@LastName,'')+'%' AND
+		                                ISNULL(c.DOB,'') like '%'+ISNULL(@DOB,'')+'%' AND
+		                                ISNULL(c.Gender,'') like '%'+ISNULL(@Gender,'')+'%' AND
+		                                ISNULL(c.Country,'') like '%'+ISNULL(@Country,'')+'%' AND
+		                                ISNULL(v.Manufacturer,'') like '%'+ISNULL(@Manufacturer,'')+'%' AND
+		                                ISNULL(v.Model,'') like '%'+ISNULL(@Model,'')+'%' AND
+		                                ISNULL(v.[Type],'') like '%'+ISNULL(@Type,'')+'%' AND
+		                                ISNULL(v.Color,'') like '%'+ISNULL(@Color,'')+'%' AND
+		                                ISNULL(v.[Year],'') like '%'+ISNULL(@Year,'')+'%'
 	                                ORDER BY r.Id ASC
                                 END
                     GO
@@ -424,11 +424,11 @@ namespace BlazorVehicleReservations.API.Migrations
 
 	                                Select * FROM dbo.Vehicle
 	                                WHERE 
-		                                ISNULL(Manufacturer,'') like '%'+@Manufacturer+'%' AND
-		                                ISNULL(Model,'') like '%'+@Model+'%' AND
-		                                ISNULL([Type],'') like '%'+@Type+'%' AND
-		                                ISNULL(Color,'') like '%'+@Color+'%' AND
-		                                ISNULL([Year],'') like '%'+@Year+'%'
+		                                ISNULL(Manufacturer,'') like '%'+ISNULL(@Manufacturer,'')+'%' AND
+		                                ISNULL(Model,'') like '%'+ISNULL(@Model,'')+'%' AND
+		                                ISNULL([Type],'') like '%'+ISNULL(@Type,'')+'%' AND
+		                                ISNULL(Color,'') like '%'+ISNULL(@Color,'')+'%' AND
+		                                ISNULL([Year],'') like '%'+ISNULL(@Year,'')+'%'
 	                                ORDER BY Id
                                 END
                     GO

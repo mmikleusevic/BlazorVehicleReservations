@@ -13,5 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient {
 });
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 await builder.Build().RunAsync();

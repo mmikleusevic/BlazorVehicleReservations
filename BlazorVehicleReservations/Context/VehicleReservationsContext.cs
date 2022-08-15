@@ -1,4 +1,4 @@
-﻿using BlazorVehicleReservations.Shared;
+﻿using BlazorVehicleReservations.API.Models;
 using BlazorVehicleReservations.Shared.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 

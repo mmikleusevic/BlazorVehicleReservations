@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlazorVehicleReservations.API.Context;
+using BlazorVehicleReservations.API.Models;
 using BlazorVehicleReservations.API.Service.Interface;
 using BlazorVehicleReservations.Shared;
 using BlazorVehicleReservations.Shared.Models.Dto;

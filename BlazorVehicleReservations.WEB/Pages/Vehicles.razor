@@ -1,0 +1,51 @@
+﻿@page "/vehicles"
+
+<h3>Vehicles</h3>
+@if (messageResultList == null)
+{
+    <p>Loading...</p>
+}
+else if(messageResultList != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col">Manufacturer</th>
+                <th class="col">Model</th>
+                <th class="col">Type</th>
+                <th class="col">Color</th>
+                <th class="col">Year</th>
+                <th class="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in messageResultList.Data)
+            {
+                <tr>
+                    <td>@data.Manufacturer</td>
+                    <td>@data.Model</td>
+                    <td>@data.Type</td>
+                    <td>@data.Color</td>
+                    <td>@data.Year</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger"><i class="oi oi-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Inject]
+    private IVehicleService VehicleService { get; set; } = default!;
+
+    private MessageResult<List<VehicleDto>> messageResultList { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResultList = await VehicleService.GetAllVehicles();
+    }
+}

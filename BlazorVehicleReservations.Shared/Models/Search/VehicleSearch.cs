@@ -10,14 +10,14 @@ namespace BlazorVehicleReservations.Shared.Models.Search
     public class VehicleSearch
     {
         [StringLength(20, ErrorMessage = "You can't search Manufacturer by more than 20 characters")]
-        public string? Manufacturer { get; set; }
+        public string? Manufacturer { get; set; } = string.Empty;
         [StringLength(20, ErrorMessage = "You can't search Model by more than 20 characters")]
-        public string? Model { get; set; }
+        public string? Model { get; set; } = string.Empty;
         [StringLength(20, ErrorMessage = "You can't search Type by more than 20 characters")]
-        public string? Type { get; set; }
+        public string? Type { get; set; } = string.Empty;
         [StringLength(20, ErrorMessage = "You can't search Color by more than 20 characters")]
-        public string? Color { get; set; }
+        public string? Color { get; set; } = string.Empty;
         [StringLength(4, ErrorMessage = "You can't search Year by more than 10 characters")]
-        public string? Year { get; set; }
+        public string? Year { get; set; } = string.Empty;
     }
 }

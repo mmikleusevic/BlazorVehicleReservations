@@ -1,0 +1,51 @@
+﻿@page "/clients"
+
+<h3>Clients</h3>
+@if (messageResultList == null)
+{
+    <p>Loading...</p>
+}
+else if(messageResultList != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col">First name</th>
+                <th class="col">Last name</th>
+                <th class="col">Dob</th>
+                <th class="col">Gender</th>
+                <th class="col">Country</th>
+                <th class="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in messageResultList.Data)
+            {
+                <tr>
+                    <td>@data.FName</td>
+                    <td>@data.LName</td>
+                    <td>@data.Dob.Value.ToShortDateString()</td>
+                    <td>@data.Gender</td>
+                    <td>@data.Country</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger"><i class="oi oi-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Inject]
+    private IClientService ClientService { get; set; } = default!;
+
+    private MessageResult<List<ClientDto>> messageResultList { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResultList = await ClientService.GetAllClients();
+    }
+}
