@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorVehicleReservations.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorVehicleReservations.Tests", "BlazorVehicleReservations.Tests\BlazorVehicleReservations.Tests.csproj", "{B2542AEF-DE42-48C9-9B8E-035F503812D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorVehicleReservations.WEB", "BlazorVehicleReservations.WEB\BlazorVehicleReservations.WEB.csproj", "{C3E751E0-602C-4A1F-A143-074750A59631}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B2542AEF-DE42-48C9-9B8E-035F503812D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2542AEF-DE42-48C9-9B8E-035F503812D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2542AEF-DE42-48C9-9B8E-035F503812D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E751E0-602C-4A1F-A143-074750A59631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E751E0-602C-4A1F-A143-074750A59631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E751E0-602C-4A1F-A143-074750A59631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E751E0-602C-4A1F-A143-074750A59631}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

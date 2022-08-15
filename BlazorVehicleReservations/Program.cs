@@ -4,6 +4,7 @@ using BlazorVehicleReservations.API.Mapper;
 using BlazorVehicleReservations.API.Service;
 using BlazorVehicleReservations.API.Service.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
@@ -57,6 +58,15 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    builder.WithOrigins("http://localhost:50422")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials());
+});
+
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
@@ -72,6 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

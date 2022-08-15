@@ -1,0 +1,77 @@
+﻿@page "/vehicle"
+
+<h3>Vehicle</h3>
+@if(messageResult == null)
+{
+    <p>Loading...</p>
+}else if(messageResult.Data != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col">Manufacturer</th>
+                <th class="col">Model</th>
+                <th class="col">Type</th>
+                <th class="col">Color</th>
+                <th class="col">Year</th>
+                <th claclass="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var data in messageResult.Data)
+            {
+            <tr>            
+                <td>@data.Manufacturer</td>
+                <td>@data.Model</td>
+                <td>@data.Type</td>
+                <td>@data.Color</td>
+                <td>@data.Year</td>
+                <td>
+                    <button type="submit" class="btn btn-primary"  @onclick="@(async () => await GetVehicle(@data.VehicleId))"><i class="oi oi-eye"></i></button>
+                    <button type="submit" class="btn btn-success" ><i class="oi oi-pencil"></i></button>
+                    <button type="submit" class="btn btn-danger" @onclick="Delete_Click"><i class="oi oi-trash"></i></button>
+                </td>
+            </tr>
+           }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>@messageResult.Message</p>
+}
+<DeleteDialog @ref="DeleteConfirmation" ConfirmationChanged="@(async () => await DeleteVehicle(true))"></DeleteDialog>
+
+@code {
+    [Inject]
+    private IVehicleService VehicleService { get; set; } = default!;
+
+    private MessageResult<List<VehicleDto>>? messageResult { get; set; }
+
+    private MessageResult<VehicleDto>? messageVehicle { get; set; }
+
+    private ModalTemplateDelete DeleteConfirmation { get; set; } = default!;
+
+    protected void Delete_Click()
+    {
+        DeleteConfirmation.ShowDialog();
+    }
+
+    protected override async Task OnInitializedAsync() 
+    {
+        messageResult = await VehicleService.GetAllVehicles();
+        StateHasChanged();
+    }
+
+    protected async Task GetVehicle(int id)
+    {
+        messageVehicle = await VehicleService.GetVehicle(id);
+    }
+
+    protected async Task DeleteVehicle(bool value)
+    {
+        if(value == true){
+            messageVehicle = await VehicleService.DeleteVehicle(3);
+        }
+    }
+}
