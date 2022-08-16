@@ -3,7 +3,30 @@
 
 <h3>Reservations</h3>
 
-<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())">Create</button>
+<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())" style="margin:10px 10px">Create</button>
+<button type="submit" class="btn btn-secondary" @onclick="ClearSearch" style="margin:10px 10px">Clear Search</button>
+<EditForm Model="@reservationSearch" @oninput="ReservationSearch">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table>
+        <thead class="simple-form">
+            <tr class="form-group">
+                <th class="col"><input placeholder="Reserved From" @bind-value="reservationSearch.ReservedFrom" @bind-value:event="oninput" type="text" class="form-control" id="reservedFrom" /></th>
+                <th class="col"><input placeholder="Reserved Until" @bind-value="reservationSearch.ReservedUntil" @bind-value:event="oninput" type="text" class="form-control" id="reservedUntil" /></th>
+                <th class="col"><input placeholder="First Name" @bind-value="reservationSearch.FirstName" @bind-value:event="oninput" type="text" class="form-control" id="firstName" /></th>
+                <th class="col"><input placeholder="Last Name" @bind-value="reservationSearch.LastName" @bind-value:event="oninput" type="text" class="form-control" id="lastName" /></th>
+                <th class="col"><input placeholder="Date of birth" @bind-value="reservationSearch.Dob" @bind-value:event="oninput" type="text" class="form-control" id="dob" /></th>
+                <th class="col"><input placeholder="Gender" @bind-value="reservationSearch.Gender" @bind-value:event="oninput" type="text" class="form-control" id="gender" /></th>
+                <th class="col"><input placeholder="Country" @bind-value="reservationSearch.Country" @bind-value:event="oninput" type="text" class="form-control" id="country" /></th>
+                <th class="col"><input placeholder="Manufacturer" @bind-value="reservationSearch.Manufacturer" @bind-value:event="oninput" type="text" class="form-control" id="manufacturer" /></th>
+                <th class="col"><input placeholder="Model" @bind-value="reservationSearch.Model" @bind-value:event="oninput" type="text" class="form-control" id="model" /></th>
+                <th class="col"><input placeholder="Type" @bind-value="reservationSearch.Type" @bind-value:event="oninput" type="text" class="form-control" id="type" /></th>
+                <th class="col"><input placeholder="Color" @bind-value="reservationSearch.Color" @bind-value:event="oninput" type="text" class="form-control" id="color" /></th>
+                <th class="col"><input placeholder="Year" @bind-value="reservationSearch.Year" @bind-value:event="oninput" type="text" class="form-control" id="year" /></th>
+            </tr>
+        </thead>
+    </table>   
+</EditForm>
 @if(messageResultList == null){
     <p>Loading...</p>
 }
@@ -31,8 +54,8 @@ else if(messageResultList.Data != null)
             @foreach (var data in messageResultList.Data)
             {
                 <tr>
-                    <td>@data.ReservedFrom.ToShortDateString()</td>
-                    <td>@data.ReservedUntil.ToShortDateString()</td>
+                    <td>@data.ReservedFrom.Value.ToShortDateString()</td>
+                    <td>@data.ReservedUntil.Value.ToShortDateString()</td>
                     <td>@data.FirstName</td>
                     <td>@data.LastName</td>
                     <td>@data.Dob.Value.ToShortDateString()</td>
@@ -44,9 +67,9 @@ else if(messageResultList.Data != null)
                     <td>@data.Color</td>
                     <td>@data.Year</td>
                     <td>
-                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowReservationModal(data.Id))"><i class="oi oi-eye"></i></button>
-                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.Id))"><i class="oi oi-pencil"></i></button>
-                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.Id))"><i class="oi oi-trash"></i></button>
+                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowReservationModal(data.Id.Value))"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.Id.Value))"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.Id.Value))"><i class="oi oi-trash"></i></button>
                     </td>
                 </tr>
             }
@@ -63,6 +86,8 @@ else if(messageResultList.Data != null)
     [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
     private MessageResult<List<ReservationDto>> messageResultList { get; set; } = default!;
+
+    private ReservationSearch reservationSearch = new ReservationSearch();
 
     protected override async Task OnInitializedAsync()
     {
@@ -123,5 +148,16 @@ else if(messageResultList.Data != null)
     {
          messageResultList = await ReservationService.GetAllReservations();
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
+    }
+
+    private async Task ReservationSearch()
+    {
+        messageResultList = await ReservationService.SearchReservations(reservationSearch);
+    }
+
+    protected async Task ClearSearch()
+    {
+        reservationSearch = new ReservationSearch();
+        await ReturnAll();
     }
 }

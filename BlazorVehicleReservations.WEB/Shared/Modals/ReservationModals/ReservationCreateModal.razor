@@ -3,34 +3,51 @@
 @inject IClientService ClientService
 @inject IToastPopup ToastPopup
 
-@if (messageResultClientList.Data != null && messageResultAvailableVehicleList.Data != null){
-    <EditForm Model="@reservation" OnValidSubmit="SaveReservation">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="simple-form">
-            <InputSelect class="form-select" @bind-Value="reservation.ClientId">
-                @if (messageResultClientList.Data is null)
+<EditForm Model="@reservation" OnValidSubmit="SaveReservation">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="simple-form">
+        <div class="form-group">
+            <label for="client">Client</label>
+            <select disabled="@(messageResultClientList.Data == null)" @bind="reservation.ClientId" class="form-select" id="client">
+                @if (messageResultClientList.Data != null)
                 {
-                    <option selected value="">None</option>
+                    <option value="Null" selected>Select client</option>
+                    @foreach (var client in messageResultClientList.Data)
+                    {
+                        <option value="@client.ClientId">@(client.FName + ' ' + client.LName)</option>
+                    }
                 }
-                @foreach (var client in messageResultClientList.Data)
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="vehicle">Vehicle</label>
+            <select disabled="@(messageResultAvailableVehicleList.Data == null)" @bind="reservation.VehicleId" class="form-select" id="vehicle">
+                @if (messageResultAvailableVehicleList.Data != null)
                 {
-                    <option value="@client.ClientId">@(client.FName + ' ' + client.LName)</option>
+                    <option value="Null" selected>Select vehicle</option>
+                    @foreach (var vehicle in messageResultAvailableVehicleList.Data)
+                    {
+                        <option value="@vehicle.VehicleId">@(vehicle.Manufacturer + '-' + vehicle.Model + '-' + vehicle.Color+ '-' + vehicle.Year)</option>
+                    }
                 }
-            </InputSelect>
+            </select>
         </div>
-
-
-
-        <div class="buttonEdit">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        <div class="form-group">
+            <label for="reservationFrom">Reservation From</label>
+            <input @bind="@reservation.ReservedFrom" type="datetime-local" class="form-control" id="reservationFrom" />
         </div>
-    </EditForm>
-}else{
-    ToastPopup.ReturnAppropriateMessageMain("Client or available vehicle don't exist", 404);
-    ModalInstance.CloseAsync();
-}
+        <div class="form-group">
+            <label for="reservationUntil">Reservation Until</label>
+            <input @bind="@reservation.ReservedUntil" type="datetime-local" class="form-control" id="reservationUntil" />
+        </div>
+    </div>
+
+    <div class="buttonEdit">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+    </div>
+</EditForm>
 
 @code {
     [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
@@ -39,9 +56,9 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    private MessageResult<List<ClientDto>> messageResultClientList { get; set; } = default!;
+    MessageResult<List<ClientDto>> messageResultClientList = new MessageResult<List<ClientDto>>();
 
-    private MessageResult<List<VehicleDto>> messageResultAvailableVehicleList { get; set; } = default!;
+    MessageResult<List<VehicleDto>> messageResultAvailableVehicleList = new MessageResult<List<VehicleDto>>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,7 +66,7 @@
         messageResultAvailableVehicleList = await VehicleService.GetAllAvailableVehicles();
     }
 
-    private async Task SaveReservation()
+    protected async Task SaveReservation()
     {
         responseMessage = await ReservationService.CreateReservations(reservation);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

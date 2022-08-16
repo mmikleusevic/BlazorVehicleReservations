@@ -6,7 +6,7 @@ namespace BlazorVehicleReservations.Shared.Models.Dto
     public class ClientDto
     {
         [JsonPropertyName("ClientId")]
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         [StringLength(50, ErrorMessage = "First name has to contain maximum of 50 characters")]
         [JsonPropertyName("FName")]
         public string? FName { get; set; }

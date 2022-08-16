@@ -46,7 +46,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    async Task SaveClient()
+    protected async Task SaveClient()
     {
         responseMessage = await ClientService.CreateClient(client);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

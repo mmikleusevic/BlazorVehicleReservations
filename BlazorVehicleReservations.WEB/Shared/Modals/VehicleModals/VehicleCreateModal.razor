@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="year">Year</label>
-            <input @bind="@vehicle.Year" type="number" class="form-control" id="year" />
+            <input @bind="@vehicle.Year" min="1900" max="2100" type="number" class="form-control" id="year" />
         </div>
 
         <div class="buttonEdit">
@@ -48,7 +48,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    private async Task SaveVehicle()
+    async Task SaveVehicle()
     {
         responseMessage = await VehicleService.CreateVehicle(vehicle);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

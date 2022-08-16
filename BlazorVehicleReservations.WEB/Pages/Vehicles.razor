@@ -2,7 +2,24 @@
 @inject IToastPopup ToastPopup
 
 <h3>Vehicles</h3>
-<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())">Create</button>
+<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())" style="margin:10px 10px">Create</button>
+<button type="submit" class="btn btn-secondary" @onclick="ClearSearch" style="margin:10px 10px">Clear Search</button>
+<EditForm Model="@vehicleSearch" @oninput="VehicleSearch">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table>
+        <thead class="simple-form">
+            <tr class="form-group">
+                <th class="col"><input placeholder="Manufacturer" @bind-value="vehicleSearch.Manufacturer" @bind-value:event="oninput" type="text" class="form-control" id="manufacturer" /></th>
+                <th class="col"><input placeholder="Model" @bind-value="vehicleSearch.Model" @bind-value:event="oninput" type="text" class="form-control" id="model" /></th>
+                <th class="col"><input placeholder="Type" @bind-value="vehicleSearch.Type" @bind-value:event="oninput" type="text" class="form-control" id="type" /></th>
+                <th class="col"><input placeholder="Color" @bind-value="vehicleSearch.Color" @bind-value:event="oninput" type="text" class="form-control" id="color" /></th>
+                <th class="col"><input placeholder="Year" @bind-value="vehicleSearch.Year" @bind-value:event="oninput" type="text" class="form-control" id="year" /></th>
+            </tr>
+        </thead>
+    </table>   
+</EditForm>
+
 @if (messageResultList == null)
 {
     <p>Loading...</p>
@@ -30,9 +47,9 @@ else if (messageResultList.Data != null)
                     <td>@data.Color</td>
                     <td>@data.Year</td>
                     <td>
-                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowVehicleModal(data.VehicleId))"><i class="oi oi-eye"></i></button>
-                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.VehicleId))"><i class="oi oi-pencil"></i></button>
-                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.VehicleId))"><i class="oi oi-trash"></i></button>
+                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowVehicleModal(data.VehicleId.Value))"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.VehicleId.Value))"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.VehicleId.Value))"><i class="oi oi-trash"></i></button>
                     </td>
                 </tr>
             }
@@ -52,9 +69,11 @@ else
 
     private MessageResult<List<VehicleDto>> messageResultList { get; set; } = default!;
 
+    private VehicleSearch vehicleSearch = new VehicleSearch();
+
     protected override async Task OnInitializedAsync()
     {
-        messageResultList = await VehicleService.GetAllVehicles();
+        await ReturnAll();
     }
 
     private async Task ShowEditModal(int vehicleId)
@@ -66,7 +85,8 @@ else
 
         var result = await formModal.Result;
 
-        if(!result.Cancelled){
+        if (!result.Cancelled)
+        {
             await ReturnAll();
         }
     }
@@ -110,5 +130,16 @@ else
     {
         messageResultList = await VehicleService.GetAllVehicles();
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
+    }
+
+    private async Task VehicleSearch()
+    {
+        messageResultList = await VehicleService.SearchVehicles(vehicleSearch);
+    }
+
+    protected async Task ClearSearch()
+    {
+        vehicleSearch = new VehicleSearch();
+        await ReturnAll();
     }
 }

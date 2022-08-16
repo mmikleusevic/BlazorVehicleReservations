@@ -6,19 +6,20 @@ namespace BlazorVehicleReservations.Shared.Models.Dto
     public class ReservationDto
     {
         [JsonPropertyName("Id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Required]
         [JsonPropertyName("ClientId")]
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         [Required]
         [JsonPropertyName("VehicleId")]
-        public int VehicleId { get; set; }
+        public int? VehicleId { get; set; }
         [Required]
         [JsonPropertyName("ReservedFrom")]
-        public DateTime ReservedFrom { get; set; }
+        [CustomDateAnnotation("ReservedUntil")]
+        public DateTime? ReservedFrom { get; set; }
         [Required]
         [JsonPropertyName("ReservedUntil")]
-        public DateTime ReservedUntil { get; set; }
+        public DateTime? ReservedUntil { get; set; }
         [StringLength(50, ErrorMessage = "First name has to contain maximum of 50 characters")]
         [JsonPropertyName("FirstName")]
         public string? FirstName { get; set; }

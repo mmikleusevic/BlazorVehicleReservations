@@ -30,7 +30,7 @@
 
         <div class="form-group">
             <label for="year">Year</label>
-            <input @bind="@messageResult.Data.Year" type="number" class="form-control" id="year" />
+            <input @bind="@messageResult.Data.Year" min="1900" max="2100" type="number" class="form-control" id="year" />
         </div>
 
         <div class="buttonEdit">

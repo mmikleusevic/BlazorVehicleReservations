@@ -19,11 +19,12 @@ namespace BlazorVehicleReservations.WEB.Models
                 _toastService.ShowSuccess(messageResult.Message);
                 await ModalInstance.CloseAsync();
             }
-            else if (messageResult.StatusCode == 204)
+            else if(messageResult.StatusCode == 204)
             {
                 _toastService.ShowInfo(messageResult.Message);
+                await ModalInstance.CloseAsync();
             }
-            else if (messageResult.StatusCode == 404)
+            else if (messageResult.StatusCode >= 400 && messageResult.StatusCode < 500)
             {
                 _toastService.ShowWarning(messageResult.Message);
             }
