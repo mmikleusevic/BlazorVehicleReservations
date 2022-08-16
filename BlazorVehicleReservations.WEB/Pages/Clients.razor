@@ -1,11 +1,14 @@
 ﻿@page "/clients"
+@inject IToastPopup ToastPopup
 
 <h3>Clients</h3>
+
+<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())">Create</button>
 @if (messageResultList == null)
 {
     <p>Loading...</p>
 }
-else if(messageResultList != null)
+else if (messageResultList.Data != null)
 {
     <table class="table table-striped">
         <thead>
@@ -28,24 +31,86 @@ else if(messageResultList != null)
                     <td>@data.Gender</td>
                     <td>@data.Country</td>
                     <td>
-                        <button type="submit" class="btn btn-primary"><i class="oi oi-eye"></i></button>
-                        <button type="submit" class="btn btn-success"><i class="oi oi-pencil"></i></button>
-                        <button type="submit" class="btn btn-danger"><i class="oi oi-trash"></i></button>
+                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowClientModal(data.ClientId))"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.ClientId))"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.ClientId))"><i class="oi oi-trash"></i></button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+else
+{
+    <p>No data</p>
+}
 
 @code {
     [Inject]
     private IClientService ClientService { get; set; } = default!;
 
+    [CascadingParameter] private IModalService Modal { get; set; } = default!;
+
     private MessageResult<List<ClientDto>> messageResultList { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
+        await ReturnAll();
+    }
+
+    private void ShowClientModal(int clientId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ClientDto.ClientId), clientId);
+
+        Modal.Show<ClientShowModal>("Client", parameters);
+    }
+
+    private async Task ShowEditModal(int clientId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ClientDto.ClientId), clientId);
+
+        var formModal = Modal.Show<ClientEditModal>("Edit client", parameters);
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private async Task ShowCreateModal()
+    {
+        var formModal = Modal.Show<ClientCreateModal>("Create client");
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private async Task ShowDeleteModal(int clientId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ClientDto.ClientId), clientId);
+
+        var formModal = Modal.Show<ClientDeleteModal>("Delete client", parameters);
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private async Task ReturnAll()
+    {
         messageResultList = await ClientService.GetAllClients();
+        await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 }

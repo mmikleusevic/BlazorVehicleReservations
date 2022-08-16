@@ -1,0 +1,64 @@
+﻿@inject IVehicleService VehicleService
+@inject IToastPopup ToastPopup
+
+@if(messageResult.Data != null)
+{
+    <EditForm Model="@messageResult.Data" OnValidSubmit="SaveVehicle">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="simple-form">
+
+        <div class="form-group">
+            <label for="manufacturer">Manufacturer</label>
+            <input @bind="@messageResult.Data.Manufacturer" type="text" class="form-control" id="manufacturer" />
+        </div>
+
+        <div class="form-group">
+            <label for="model">Model</label>
+            <input @bind="@messageResult.Data.Model" type="text" class="form-control" id="model" />
+        </div>
+
+        <div class="form-group">
+            <label for="type">Type</label>
+            <input @bind="@messageResult.Data.Type" type="text" class="form-control" id="type" />
+        </div>
+
+        <div class="form-group">
+            <label for="color">Color</label>
+            <input @bind="@messageResult.Data.Color" type="text" class="form-control" id="color" />
+        </div>
+
+        <div class="form-group">
+            <label for="year">Year</label>
+            <input @bind="@messageResult.Data.Year" type="number" class="form-control" id="year" />
+        </div>
+
+        <div class="buttonEdit">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+    </EditForm>
+}
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    [Parameter] public int VehicleId { get; set; }
+
+    MessageResult<VehicleDto> messageResult = new MessageResult<VehicleDto>();
+
+    ResponseMessage responseMessage = new ResponseMessage();
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResult = await VehicleService.GetVehicle(VehicleId);
+    }
+
+    async Task SaveVehicle()
+    {
+        responseMessage = await VehicleService.UpdateVehicle(messageResult.Data, VehicleId);
+        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+    }
+}

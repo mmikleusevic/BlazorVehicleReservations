@@ -2,10 +2,8 @@
 
 namespace BlazorVehicleReservations.WEB.Models
 {
-    public class MessageResult<T>
+    public class MessageResult<T> : ResponseMessage
     {
-        [NotNull]
-        public string? Message { get; set; } = "Loading..."!;
         [AllowNull]
         public T? Data { get; set; }
     }

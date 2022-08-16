@@ -1,0 +1,57 @@
+﻿@inject IReservationService ReservationService
+@inject IVehicleService VehicleService
+@inject IClientService ClientService
+@inject IToastPopup ToastPopup
+
+@if (messageResultClientList.Data != null && messageResultAvailableVehicleList.Data != null){
+    <EditForm Model="@reservation" OnValidSubmit="SaveReservation">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="simple-form">
+            <InputSelect class="form-select" @bind-Value="reservation.ClientId">
+                @if (messageResultClientList.Data is null)
+                {
+                    <option selected value="">None</option>
+                }
+                @foreach (var client in messageResultClientList.Data)
+                {
+                    <option value="@client.ClientId">@(client.FName + ' ' + client.LName)</option>
+                }
+            </InputSelect>
+        </div>
+
+
+
+        <div class="buttonEdit">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        </div>
+    </EditForm>
+}else{
+    ToastPopup.ReturnAppropriateMessageMain("Client or available vehicle don't exist", 404);
+    ModalInstance.CloseAsync();
+}
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    ReservationDto reservation = new ReservationDto();
+
+    ResponseMessage responseMessage = new ResponseMessage();
+
+    private MessageResult<List<ClientDto>> messageResultClientList { get; set; } = default!;
+
+    private MessageResult<List<VehicleDto>> messageResultAvailableVehicleList { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResultClientList = await ClientService.GetAllClients();
+        messageResultAvailableVehicleList = await VehicleService.GetAllAvailableVehicles();
+    }
+
+    private async Task SaveReservation()
+    {
+        responseMessage = await ReservationService.CreateReservations(reservation);
+        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+    }
+}

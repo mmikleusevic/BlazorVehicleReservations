@@ -1,10 +1,13 @@
 ﻿@page "/"
+@inject IToastPopup ToastPopup
 
 <h3>Reservations</h3>
+
+<button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())">Create</button>
 @if(messageResultList == null){
     <p>Loading...</p>
 }
-else if(messageResultList != null)
+else if(messageResultList.Data != null)
 {
     <table class="table table-striped">
         <thead>
@@ -41,24 +44,84 @@ else if(messageResultList != null)
                     <td>@data.Color</td>
                     <td>@data.Year</td>
                     <td>
-                        <button type="submit" class="btn btn-primary"><i class="oi oi-eye"></i></button>
-                        <button type="submit" class="btn btn-success"><i class="oi oi-pencil"></i></button>
-                        <button type="submit" class="btn btn-danger"><i class="oi oi-trash"></i></button>
+                        <button type="submit" class="btn btn-primary" @onclick="@(() => ShowReservationModal(data.Id))"><i class="oi oi-eye"></i></button>
+                        <button type="submit" class="btn btn-success" @onclick="@(() => ShowEditModal(data.Id))"><i class="oi oi-pencil"></i></button>
+                        <button type="submit" class="btn btn-danger" @onclick="@(() => ShowDeleteModal(data.Id))"><i class="oi oi-trash"></i></button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}else{
+    <p>No data</p>
 }
 
 @code {
     [Inject]
     private IReservationService ReservationService { get; set; } = default!;
 
+    [CascadingParameter] private IModalService Modal { get; set; } = default!;
+
     private MessageResult<List<ReservationDto>> messageResultList { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        messageResultList = await ReservationService.GetAllReservations();
+        await ReturnAll();
+    }
+
+    private async Task ShowEditModal(int id)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ReservationDto.Id), id);
+
+        var formModal = Modal.Show<ReservationEditModal>("Edit reservation", parameters);
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private async Task ShowDeleteModal(int id)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ReservationDto.Id), id);
+
+        var formModal = Modal.Show<ReservationDeleteModal>("Delete reservation", parameters);
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private async Task ShowCreateModal()
+    {
+        var formModal = Modal.Show<ReservationCreateModal>("Create reservation");
+
+        var result = await formModal.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReturnAll();
+        }
+    }
+
+    private void ShowReservationModal(int id)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ReservationDto.Id), id);
+
+        Modal.Show<ReservationShowModal>("Reservation", parameters);
+    }
+
+    private async Task ReturnAll()
+    {
+         messageResultList = await ReservationService.GetAllReservations();
+        await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 }

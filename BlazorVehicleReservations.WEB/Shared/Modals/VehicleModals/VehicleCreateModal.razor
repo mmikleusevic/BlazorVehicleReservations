@@ -1,0 +1,56 @@
+﻿@inject IVehicleService VehicleService
+@inject IToastPopup ToastPopup
+
+<EditForm Model="@vehicle" OnValidSubmit="SaveVehicle">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="simple-form">
+
+        <div class="form-group">
+            <label for="manufacturer">Manufacturer</label>
+            <input @bind="@vehicle.Manufacturer" type="text" class="form-control" id="manufacturer" />
+        </div>
+
+        <div class="form-group">
+            <label for="model">Model</label>
+            <input @bind="@vehicle.Model" type="text" class="form-control" id="model" />
+        </div>
+
+        <div class="form-group">
+            <label for="type">Type</label>
+            <input @bind="@vehicle.Type" type="text" class="form-control" id="type" />
+        </div>
+
+        <div class="form-group">
+            <label for="color">Color</label>
+            <input @bind="@vehicle.Color" type="text" class="form-control" id="color" />
+        </div>
+
+        <div class="form-group">
+            <label for="year">Year</label>
+            <input @bind="@vehicle.Year" type="number" class="form-control" id="year" />
+        </div>
+
+        <div class="buttonEdit">
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    VehicleDto vehicle = new VehicleDto();
+
+    ResponseMessage responseMessage = new ResponseMessage();
+
+    private async Task SaveVehicle()
+    {
+        responseMessage = await VehicleService.CreateVehicle(vehicle);
+        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+    }
+}

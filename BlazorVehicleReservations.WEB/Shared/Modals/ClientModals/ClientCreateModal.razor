@@ -1,0 +1,54 @@
+﻿@inject IClientService ClientService
+@inject IToastPopup ToastPopup
+
+<EditForm Model="@client" OnValidSubmit="SaveClient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="simple-form">
+
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input @bind="@client.FName" type="text" class="form-control" id="firstName"/>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input @bind="@client.LName" type="text" class="form-control" id="lastName"/>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Dob</label>
+            <input @bind="@client.Dob" type="date" class="form-control" id="dob"/>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <input @bind="@client.Gender" type="text" class="form-control" id="gender"/>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input @bind="@client.Country" type="text" class="form-control" id="country"/>
+        </div>
+
+        <div class="buttonEdit">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    ClientDto client = new ClientDto();
+
+    ResponseMessage responseMessage = new ResponseMessage();
+
+    async Task SaveClient()
+    {
+        responseMessage = await ClientService.CreateClient(client);
+        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+    }
+}

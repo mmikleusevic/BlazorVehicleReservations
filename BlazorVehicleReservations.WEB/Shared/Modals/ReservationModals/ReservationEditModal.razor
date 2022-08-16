@@ -1,0 +1,36 @@
+﻿@inject IReservationService ReservationService
+@inject IToastPopup ToastPopup
+
+@if (messageResult.Data != null)
+{
+    <div class="simple-form">
+
+        
+
+        <div class="buttonEdit">
+            <button @onclick="SaveReservation" class="btn btn-primary">Submit</button>
+            <button @onclick="ModalInstance.CancelAsync" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    [Parameter] public int Id { get; set; }
+
+    MessageResult<ReservationDto> messageResult = new MessageResult<ReservationDto>();
+
+    ResponseMessage responseMessage = new ResponseMessage();
+
+    protected override async Task OnInitializedAsync()
+    {
+        messageResult = await ReservationService.GetReservation(Id);
+    }
+
+    async Task SaveReservation()
+    {
+        responseMessage = await ReservationService.UpdateReservation(messageResult.Data, Id);
+        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+    }
+}

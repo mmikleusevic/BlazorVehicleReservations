@@ -24,11 +24,11 @@ namespace BlazorVehicleReservations.WEB.Services
             var response = await _httpClient.PostAsync($"api/Client", httpContent);
             if (response.StatusCode == HttpStatusCode.Created)
             {
-                responseMessage.Message = "Data succesfully created";
+                responseMessage.Message = "Client succesfully created";
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                responseMessage.Message = "Data could not be created";
+                responseMessage.Message = "Client could not be created";
             }
             else
             {
@@ -44,12 +44,12 @@ namespace BlazorVehicleReservations.WEB.Services
             var response = await _httpClient.DeleteAsync($"api/Client/{id}");
             if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                responseMessage.Message = "Data succesfully deleted";
+                responseMessage.Message = "Client succesfully deleted";
 
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest)
             {
-                responseMessage.Message = "Data not found";
+                responseMessage.Message = "Client not found";
             }
             else
             {
@@ -79,6 +79,7 @@ namespace BlazorVehicleReservations.WEB.Services
                 result.Data = null;
                 result.Message = "Server error occured";
             }
+            result.StatusCode = (int)response.StatusCode;
             return result;
         }
 
@@ -102,6 +103,7 @@ namespace BlazorVehicleReservations.WEB.Services
                 result.Data = null;
                 result.Message = "Server error occured";
             }
+            result.StatusCode = (int)response.StatusCode;
             return result;
         }
 
@@ -126,6 +128,7 @@ namespace BlazorVehicleReservations.WEB.Services
                 result.Data = null;
                 result.Message = "Server error occured";
             }
+            result.StatusCode = (int)response.StatusCode;
             return result;
         }
 
@@ -136,16 +139,16 @@ namespace BlazorVehicleReservations.WEB.Services
             var response = await _httpClient.PutAsync($"api/Client/{id}", httpContent);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                responseMessage.Message = "Data succesfully updated";
+                responseMessage.Message = "Client succesfully updated";
 
             }
             else if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                responseMessage.Message = "Data not found";
+                responseMessage.Message = "Client was not updated";
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                responseMessage.Message = "Data not found";
+                responseMessage.Message = "Client not found";
             }
             else
             {
