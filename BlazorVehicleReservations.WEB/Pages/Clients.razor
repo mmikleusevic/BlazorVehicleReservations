@@ -5,21 +5,24 @@
 
 <button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())" style="margin:10px 10px">Create</button>
 <button type="submit" class="btn btn-secondary" @onclick="ClearSearch" style="margin:10px 10px">Clear Search</button>
-<EditForm Model="@clientSearch" @oninput="ClientSearch">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <table>
-        <thead class="simple-form">
-            <tr class="form-group">
-                <th class="col"><input placeholder="First Name" @bind-value="clientSearch.FirstName" @bind-value:event="oninput" type="text" class="form-control" id="firstName" /></th>
-                <th class="col"><input placeholder="Last Name" @bind-value="clientSearch.LastName" @bind-value:event="oninput" type="text" class="form-control" id="lastName" /></th>
-                <th class="col"><input placeholder="Date of birth" @bind-value="clientSearch.Dob" @bind-value:event="oninput" type="text" class="form-control" id="dob" /></th>
-                <th class="col"><input placeholder="Gender" @bind-value="clientSearch.Gender" @bind-value:event="oninput" type="text" class="form-control" id="gender" /></th>
-                <th class="col"><input placeholder="Country" @bind-value="clientSearch.Country" @bind-value:event="oninput" type="text" class="form-control" id="country" /></th>
-            </tr>
-        </thead>
-    </table>
-</EditForm>
+@if (editContext != null && clientSearch != null)
+{
+    <EditForm EditContext="@editContext" @oninput="ValidateClientSearch">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <table>
+            <thead class="simple-form">
+                <tr class="form-group">
+                    <th class="col"><OnInputText Placeholder="First Name" @bind-Value="clientSearch.FirstName" /></th>
+                    <th class="col"><OnInputText Placeholder="Last Name" @bind-Value="clientSearch.LastName" /></th>
+                    <th class="col"><OnInputText Placeholder="Date of Birth" @bind-Value="clientSearch.Dob" /></th>
+                    <th class="col"><OnInputText Placeholder="Gender" @bind-Value="clientSearch.Gender" /></th>
+                    <th class="col"><OnInputText Placeholder="Country" @bind-Value="clientSearch.Country" /></th>
+                </tr>
+            </thead>
+        </table>
+    </EditForm>
+}
 @if (messageResultList == null)
 {
     <p>Loading...</p>
@@ -43,7 +46,7 @@ else if (messageResultList.Data != null)
                 <tr>
                     <td>@data.FName</td>
                     <td>@data.LName</td>
-                    <td>@data.Dob.Value.ToShortDateString()</td>
+                    <td>@(data.Dob.HasValue ? @data.Dob.Value.ToShortDateString() : "")</td>
                     <td>@data.Gender</td>
                     <td>@data.Country</td>
                     <td>
@@ -71,9 +74,12 @@ else
 
     private ClientSearch clientSearch = new ClientSearch();
 
+    private EditContext editContext  { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await ReturnAll();
+        editContext = new EditContext(clientSearch);
     }
 
     private void ShowClientModal(int clientId)
@@ -132,9 +138,12 @@ else
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
-    private async Task ClientSearch()
+    private async Task ValidateClientSearch()
     {
-        messageResultList = await ClientService.SearchClient(clientSearch);
+        var result = editContext.Validate();
+        if(result){
+            messageResultList = await ClientService.SearchClient(clientSearch);
+        }
     }
 
     protected async Task ClearSearch()

@@ -17,12 +17,10 @@ namespace BlazorVehicleReservations.WEB.Models
             if (messageResult.StatusCode >= 200 && messageResult.StatusCode < 300 && messageResult.StatusCode != 204)
             {
                 _toastService.ShowSuccess(messageResult.Message);
-                await ModalInstance.CloseAsync();
             }
             else if(messageResult.StatusCode == 204)
             {
                 _toastService.ShowInfo(messageResult.Message);
-                await ModalInstance.CloseAsync();
             }
             else if (messageResult.StatusCode >= 400 && messageResult.StatusCode < 500)
             {
@@ -32,6 +30,7 @@ namespace BlazorVehicleReservations.WEB.Models
             {
                 _toastService.ShowError(messageResult.Message);
             }
+            await ModalInstance.CloseAsync();
         }
 
         public async Task ReturnAppropriateMessageMain(string message, int statusCode)

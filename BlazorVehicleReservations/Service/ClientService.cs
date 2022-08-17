@@ -24,14 +24,17 @@ namespace BlazorVehicleReservations.API.Service
         {
             var client = _mapper.Map<Client>(clientDto);
 
-            var firstName = new SqlParameter("@FirstName", client.FirstName);
-            var lastName = new SqlParameter("@LastName", client.LastName);
-            var dob = new SqlParameter("@Dob", client.Dob);
-            var gender = new SqlParameter("@Gender", client.Gender);
-            var country = new SqlParameter("@Country", client.Country);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@FirstName", client.FirstName== null ? DBNull.Value : client.FirstName),
+                new SqlParameter("@LastName", client.LastName== null ? DBNull.Value : client.LastName),
+                new SqlParameter("@Dob", client.Dob== null ? DBNull.Value : client.Dob),
+                new SqlParameter("@Gender", client.Gender== null ? DBNull.Value : client.Gender),
+                new SqlParameter("@Country", client.Country== null ? DBNull.Value : client.Country)
+            };
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spCreateClient @FirstName, @LastName, @Dob, @Gender, @Country",
-                                                                firstName, lastName, dob, gender, country);
+                                                                parameters);
         }
 
         public async Task<int> DeleteClient(int id)
@@ -56,14 +59,17 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<IEnumerable<ClientDto>> SearchClient(ClientSearch clientSearch)
         {
-            var firstName = new SqlParameter("@FirstName", clientSearch.FirstName);
-            var lastName = new SqlParameter("@LastName", clientSearch.LastName);
-            var dob = new SqlParameter("@Dob", clientSearch.Dob);
-            var gender = new SqlParameter("@Gender", clientSearch.Gender);
-            var country = new SqlParameter("@Country", clientSearch.Country);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@FirstName", clientSearch.FirstName),
+                new SqlParameter("@LastName", clientSearch.LastName),
+                new SqlParameter("@Dob", clientSearch.Dob),
+                new SqlParameter("@Gender", clientSearch.Gender),
+                new SqlParameter("@Country", clientSearch.Country)
+            };
 
             var resultList = await _context.Clients.FromSqlRaw($"exec spSearchClient @FirstName, @LastName, @Dob, @Gender, @Country",
-                                                                firstName, lastName, dob, gender, country).ToListAsync();
+                                                                parameters).ToListAsync();
 
             return _mapper.Map<IEnumerable<ClientDto>>(resultList);
         }
@@ -72,15 +78,18 @@ namespace BlazorVehicleReservations.API.Service
         {
             var client = _mapper.Map<Client>(clientDto);
 
-            var clientId = new SqlParameter("@ClientId", client.Id);
-            var firstName = new SqlParameter("@FirstName", client.FirstName);
-            var lastName = new SqlParameter("@LastName", client.LastName);
-            var dob = new SqlParameter("@Dob", client.Dob);
-            var gender = new SqlParameter("@Gender", client.Gender);
-            var country = new SqlParameter("@Country", client.Country);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@ClientId", client.Id),
+                new SqlParameter("@FirstName", client.FirstName),
+                new SqlParameter("@LastName", client.LastName),
+                new SqlParameter("@Dob", client.Dob),
+                new SqlParameter("@Gender", client.Gender),
+                new SqlParameter("@Country", client.Country)
+            };
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateClient @ClientId, @FirstName, @LastName, @Dob, @Gender, @Country",
-                                                                clientId, firstName, lastName, dob, gender, country);
+                                                                parameters);
         }
     }
 }

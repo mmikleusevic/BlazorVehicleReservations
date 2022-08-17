@@ -29,13 +29,15 @@ namespace BlazorVehicleReservations.API.Service
             {
                 var reservation = _mapper.Map<Reservation>(reservationDto);
 
-                var clientId = new SqlParameter("@ClientId", reservation.ClientId);
-                var vehicleId = new SqlParameter("@VehicleId", reservation.VehicleId);
-                var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
-                var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@ClientId", reservation.ClientId),
+                    new SqlParameter("@VehicleId", reservation.VehicleId),
+                    new SqlParameter("@ReservedFrom", reservation.ReservedFrom),
+                    new SqlParameter("@ReservedUntil", reservation.ReservedUntil)
+                };
 
-                return await _context.Database.ExecuteSqlRawAsync($"exec spCreateReservation @ClientId, @VehicleId, @ReservedFrom, @ReservedUntil",
-                                                                    clientId, vehicleId, reservedFrom, reservedUntil);
+                return await _context.Database.ExecuteSqlRawAsync($"exec spCreateReservation @ClientId, @VehicleId, @ReservedFrom, @ReservedUntil", parameters);
             }
             return 0;
         }
@@ -61,23 +63,24 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<IEnumerable<ReservationDto>> SearchReservation(ReservationSearch reservationSearch)
         {
-            var reservedFrom = new SqlParameter("@ReservedFrom", reservationSearch.ReservedFrom);
-            var reservedUntil = new SqlParameter("@ReservedUntil", reservationSearch.ReservedUntil);
-            var firstName = new SqlParameter("@FirstName", reservationSearch.FirstName);
-            var lastName = new SqlParameter("@LastName", reservationSearch.LastName);
-            var dob = new SqlParameter("@Dob", reservationSearch.Dob);
-            var gender = new SqlParameter("@Gender", reservationSearch.Gender);
-            var country = new SqlParameter("@Country", reservationSearch.Country);
-            var manufacturer = new SqlParameter("@Manufacturer", reservationSearch.Manufacturer);
-            var model = new SqlParameter("@Model", reservationSearch.Model);
-            var type = new SqlParameter("@Type", reservationSearch.Type);
-            var color = new SqlParameter("@Color", reservationSearch.Color);
-            var year = new SqlParameter("@Year", reservationSearch.Year);
+            SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@ReservedFrom", reservationSearch.ReservedFrom),
+                    new SqlParameter("@ReservedUntil", reservationSearch.ReservedUntil),
+                    new SqlParameter("@FirstName", reservationSearch.FirstName),
+                    new SqlParameter("@LastName", reservationSearch.LastName),
+                    new SqlParameter("@Dob", reservationSearch.Dob),
+                    new SqlParameter("@Gender", reservationSearch.Gender),
+                    new SqlParameter("@Country", reservationSearch.Country),
+                    new SqlParameter("@Manufacturer", reservationSearch.Manufacturer),
+                    new SqlParameter("@Model", reservationSearch.Model),
+                    new SqlParameter("@Type", reservationSearch.Type),
+                    new SqlParameter("@Color", reservationSearch.Color),
+                    new SqlParameter("@Year", reservationSearch.Year)
+                };
 
             var resultList = await _context.ReservationDtos.FromSqlRaw($"exec spSearchReservation @ReservedFrom, @ReservedUntil, @FirstName, @LastName, @Dob,"+
-                                                                    $"@Gender, @Country, @Manufacturer, @Model, @Type, @Color, @Year",
-                                                                    reservedFrom, reservedUntil, firstName, lastName, dob, gender, country, manufacturer,
-                                                                    model, type, color, year).ToListAsync();
+                                                                    $"@Gender, @Country, @Manufacturer, @Model, @Type, @Color, @Year", parameters).ToListAsync();
 
             return _mapper.Map<IEnumerable<ReservationDto>>(resultList);
         }
@@ -86,12 +89,14 @@ namespace BlazorVehicleReservations.API.Service
         {
             var reservation = _mapper.Map<Reservation>(reservationDto);
 
-            var reservationId = new SqlParameter("@ReservationId", reservation.Id);
-            var reservedFrom = new SqlParameter("@ReservedFrom", reservation.ReservedFrom);
-            var reservedUntil = new SqlParameter("@ReservedUntil", reservation.ReservedUntil);
+            SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@ReservedFrom", reservation.ReservedFrom),
+                    new SqlParameter("@ReservedUntil", reservation.ReservedUntil),
+                    new SqlParameter("@ReservedUntil", reservation.ReservedUntil)
+                };
 
-            return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateReservation @ReservationId, @ReservedFrom, @ReservedUntil",
-                                                                reservationId, reservedFrom, reservedUntil);
+            return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateReservation @ReservationId, @ReservedFrom, @ReservedUntil", parameters);
         }
 
         public async Task<bool> CanVehicleBeReserved(ReservationDto reservationDto)

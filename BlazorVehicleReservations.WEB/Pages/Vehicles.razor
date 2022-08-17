@@ -4,21 +4,23 @@
 <h3>Vehicles</h3>
 <button type="submit" class="btn btn-primary" @onclick="@(() => ShowCreateModal())" style="margin:10px 10px">Create</button>
 <button type="submit" class="btn btn-secondary" @onclick="ClearSearch" style="margin:10px 10px">Clear Search</button>
-<EditForm Model="@vehicleSearch" @oninput="VehicleSearch">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <table>
-        <thead class="simple-form">
-            <tr class="form-group">
-                <th class="col"><input placeholder="Manufacturer" @bind-value="vehicleSearch.Manufacturer" @bind-value:event="oninput" type="text" class="form-control" id="manufacturer" /></th>
-                <th class="col"><input placeholder="Model" @bind-value="vehicleSearch.Model" @bind-value:event="oninput" type="text" class="form-control" id="model" /></th>
-                <th class="col"><input placeholder="Type" @bind-value="vehicleSearch.Type" @bind-value:event="oninput" type="text" class="form-control" id="type" /></th>
-                <th class="col"><input placeholder="Color" @bind-value="vehicleSearch.Color" @bind-value:event="oninput" type="text" class="form-control" id="color" /></th>
-                <th class="col"><input placeholder="Year" @bind-value="vehicleSearch.Year" @bind-value:event="oninput" type="text" class="form-control" id="year" /></th>
-            </tr>
-        </thead>
-    </table>   
-</EditForm>
+@if(editContext != null && vehicleSearch != null){
+    <EditForm EditContext="@editContext" @oninput="ValidateVehicleSearch">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <table>
+            <thead class="simple-form">
+                <tr class="form-group">
+                    <th class="col"><OnInputText Placeholder="Manufacturer" @bind-Value="vehicleSearch.Manufacturer" /></th>
+                    <th class="col"><OnInputText Placeholder="Model" @bind-Value="vehicleSearch.Model" /></th>
+                    <th class="col"><OnInputText Placeholder="Type" @bind-Value="vehicleSearch.Type" /></th>
+                    <th class="col"><OnInputText Placeholder="Color" @bind-Value="vehicleSearch.Color" /></th>
+                    <th class="col"><OnInputText Placeholder="Year" @bind-Value="vehicleSearch.Year" /></th>
+                </tr>
+            </thead>
+        </table>
+    </EditForm>
+}
 
 @if (messageResultList == null)
 {
@@ -71,9 +73,12 @@ else
 
     private VehicleSearch vehicleSearch = new VehicleSearch();
 
+    private EditContext editContext { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await ReturnAll();
+        editContext = new EditContext(vehicleSearch);
     }
 
     private async Task ShowEditModal(int vehicleId)
@@ -132,9 +137,12 @@ else
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
-    private async Task VehicleSearch()
+    private async Task ValidateVehicleSearch()
     {
-        messageResultList = await VehicleService.SearchVehicles(vehicleSearch);
+        var result = editContext.Validate();
+        if(result){
+            messageResultList = await VehicleService.SearchVehicles(vehicleSearch);
+        }
     }
 
     protected async Task ClearSearch()

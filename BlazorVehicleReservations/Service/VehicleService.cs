@@ -24,14 +24,16 @@ namespace BlazorVehicleReservations.API.Service
         {
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
 
-            var manufacturer = new SqlParameter("@Manufacturer", vehicle.Manufacturer);
-            var model = new SqlParameter("@Model", vehicle.Model);
-            var type = new SqlParameter("@Type", vehicle.Type);
-            var color = new SqlParameter("@Color", vehicle.Color);
-            var year = new SqlParameter("@Year", vehicle.Year);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Manufacturer", vehicle.Manufacturer == null ? DBNull.Value : vehicle.Manufacturer),
+                new SqlParameter("@Model", vehicle.Model == null ? DBNull.Value : vehicle.Model),
+                new SqlParameter("@Type", vehicle.Type == null ? DBNull.Value : vehicle.Type),
+                new SqlParameter("@Color", vehicle.Color == null ? DBNull.Value : vehicle.Color),
+                new SqlParameter("@Year", vehicle.Year == null ? DBNull.Value : vehicle.Year)
+            };
 
-            return await _context.Database.ExecuteSqlRawAsync($"exec spCreateVehicle @Manufacturer, @Model, @Type, @Color, @Year",
-                                                                manufacturer, model, type, color, year);
+            return await _context.Database.ExecuteSqlRawAsync($"exec spCreateVehicle @Manufacturer, @Model, @Type, @Color, @Year", parameters);
 
         }
 
@@ -63,14 +65,16 @@ namespace BlazorVehicleReservations.API.Service
 
         public async Task<IEnumerable<VehicleDto>> SearchVehicle(VehicleSearch vehicleSearch)
         {
-            var manufacturer = new SqlParameter("@Manufacturer", vehicleSearch.Manufacturer);
-            var model = new SqlParameter("@Model", vehicleSearch.Model);
-            var type = new SqlParameter("@Type", vehicleSearch.Type);
-            var color = new SqlParameter("@Color", vehicleSearch.Color);
-            var year = new SqlParameter("@Year", vehicleSearch.Year);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@Manufacturer", vehicleSearch.Manufacturer),
+                new SqlParameter("@Model", vehicleSearch.Model),
+                new SqlParameter("@Type", vehicleSearch.Type),
+                new SqlParameter("@Color", vehicleSearch.Color),
+                new SqlParameter("@Year", vehicleSearch.Year)
+            };
 
-            var resultList = await _context.Vehicles.FromSqlRaw("exec spSearchVehicle @Manufacturer, @Model, @Type, @Color, @Year",
-                                                                 manufacturer, model, type, color, year).ToListAsync();
+            var resultList = await _context.Vehicles.FromSqlRaw("exec spSearchVehicle @Manufacturer, @Model, @Type, @Color, @Year", parameters).ToListAsync();
 
             return _mapper.Map<IEnumerable<VehicleDto>>(resultList);
         }
@@ -79,15 +83,17 @@ namespace BlazorVehicleReservations.API.Service
         {
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
 
-            var vehicleId = new SqlParameter("@VehicleId", vehicle.Id);
-            var manufacturer = new SqlParameter("@Manufacturer", vehicle.Manufacturer);
-            var model = new SqlParameter("@Model", vehicle.Model);
-            var type = new SqlParameter("@Type", vehicle.Type);
-            var color = new SqlParameter("@Color", vehicle.Color);
-            var year = new SqlParameter("@Year", vehicle.Year);
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@VehicleId", vehicleDto.VehicleId),
+                new SqlParameter("@Manufacturer", vehicleDto.Manufacturer),
+                new SqlParameter("@Model", vehicleDto.Model),
+                new SqlParameter("@Type", vehicleDto.Type),
+                new SqlParameter("@Color", vehicleDto.Color),
+                new SqlParameter("@Year", vehicleDto.Year)
+            };
 
-            return await _context.Database.ExecuteSqlRawAsync("exec spUpdateVehicle @VehicleId, @Manufacturer, @Model, @Type, @Color, @Year",
-                                                                vehicleId, manufacturer, model, type, color, year);
+            return await _context.Database.ExecuteSqlRawAsync("exec spUpdateVehicle @VehicleId, @Manufacturer, @Model, @Type, @Color, @Year", parameters);
         }
     }
 }

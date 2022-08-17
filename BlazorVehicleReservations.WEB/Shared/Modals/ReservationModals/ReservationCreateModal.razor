@@ -22,13 +22,13 @@
         </div>
         <div class="form-group">
             <label for="vehicle">Vehicle</label>
-            <select disabled="@(messageResultAvailableVehicleList.Data == null)" @bind="reservation.VehicleId" class="form-select" id="vehicle">
+            <select disabled="@(messageResultAvailableVehicleList.Data == null)" @bind="reservation.VehicleId" class=" form-select" id="vehicle">
                 @if (messageResultAvailableVehicleList.Data != null)
                 {
                     <option value="Null" selected>Select vehicle</option>
                     @foreach (var vehicle in messageResultAvailableVehicleList.Data)
                     {
-                        <option value="@vehicle.VehicleId">@(vehicle.Manufacturer + '-' + vehicle.Model + '-' + vehicle.Color+ '-' + vehicle.Year)</option>
+                        <option value="@vehicle.VehicleId">@(vehicle.Manufacturer + '-' + vehicle.Model + '-' + vehicle.Color + '-' + vehicle.Year)</option>
                     }
                 }
             </select>
@@ -68,6 +68,7 @@
 
     protected async Task SaveReservation()
     {
+        reservation.Type = messageResultAvailableVehicleList.Data.FirstOrDefault(a => a.VehicleId == reservation.VehicleId).Type;
         responseMessage = await ReservationService.CreateReservations(reservation);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
     }
