@@ -97,7 +97,7 @@ else if (reservationsList != null)
 
     protected override async Task OnInitializedAsync()
     {
-        await ReturnAll();
+        reservationsList = await ReservationService.GetAllReservations();
         editContext = new EditContext(reservationSearch);
     }
 
@@ -112,7 +112,7 @@ else if (reservationsList != null)
 
         if (!result.Cancelled)
         {
-            await ReturnAll();
+            reservationsList = await ReservationService.GetAllReservations();
         }
     }
 
@@ -127,7 +127,7 @@ else if (reservationsList != null)
 
         if (!result.Cancelled)
         {
-            await ReturnAll();
+            reservationsList = await ReservationService.GetAllReservations();
         }
     }
 
@@ -139,7 +139,7 @@ else if (reservationsList != null)
 
         if (!result.Cancelled)
         {
-            await ReturnAll();
+            reservationsList = await ReservationService.GetAllReservations();
         }
     }
 
@@ -149,11 +149,6 @@ else if (reservationsList != null)
         parameters.Add(nameof(ReservationDto.Id), id);
 
         Modal.Show<ReservationShowModal>("Reservation", parameters);
-    }
-
-    protected async Task ReturnAll()
-    {
-        reservationsList = await ReservationService.GetAllReservations();
     }
 
     protected async Task ValidateReservationSearch()
@@ -167,6 +162,6 @@ else if (reservationsList != null)
     protected async Task ClearSearch()
     {
         reservationSearch = new ReservationSearch();
-        await ReturnAll();
+        reservationsList = await ReservationService.GetAllReservations();
     }
 }
