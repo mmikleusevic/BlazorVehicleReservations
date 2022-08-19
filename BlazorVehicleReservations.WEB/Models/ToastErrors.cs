@@ -13,7 +13,7 @@ namespace BlazorVehicleReservations.WEB.Models
             _toastService = toastService;
         }
 
-        public void ReturnAppropriateMessageDialog(HttpResponseMessage? response )
+        public void ReturnAppropriateMessageDialog(HttpResponseMessage response )
         {
             switch (response.StatusCode)
             {

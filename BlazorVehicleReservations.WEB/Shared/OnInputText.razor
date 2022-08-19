@@ -2,5 +2,5 @@
 <input @attributes="@AdditionalAttributes" placeholder="@Placeholder" type="text"  class="form-control" @bind="@CurrentValueAsString" @bind:event="oninput" />
 
 @code{
-    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Placeholder";
 }
