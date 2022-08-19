@@ -150,7 +150,7 @@ namespace BlazorVehicleReservations.API.Controllers
                     var result = await _vehicleService.CreateVehicle(vehicleDto);
                     if (result == 1)
                     {
-                        return Created("", "");
+                        return Created("", result);
                     }
                 }
                 return BadRequest();

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazorVehicleReservations.API\BlazorVehicleReservations.API.csproj" />
     <ProjectReference Include="..\BlazorVehicleReservations\BlazorVehicleReservations.API.csproj" />
   </ItemGroup>
 

@@ -124,7 +124,7 @@ namespace BlazorVehicleReservations.API.Controllers
                     var result = await _clientService.CreateClient(clientDto);
                     if (result == 1)
                     {
-                        return Created("", "");
+                        return Created("", result);
                     }
                 }
                 return BadRequest();
