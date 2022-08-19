@@ -19,7 +19,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    async Task DeleteClient()
+    protected async Task DeleteClient()
     {
         responseMessage = await ClientService.DeleteClient(ClientId);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

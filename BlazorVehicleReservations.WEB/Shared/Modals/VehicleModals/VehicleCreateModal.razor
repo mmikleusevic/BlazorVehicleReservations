@@ -48,7 +48,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    async Task SaveVehicle()
+    protected async Task SaveVehicle()
     {
         responseMessage = await VehicleService.CreateVehicle(vehicle);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

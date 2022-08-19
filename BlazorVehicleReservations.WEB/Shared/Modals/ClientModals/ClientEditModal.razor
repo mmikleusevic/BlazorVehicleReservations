@@ -57,7 +57,7 @@
         messageResult = await ClientService.GetClient(ClientId);
     }
 
-    async Task SaveClient()
+    protected async Task SaveClient()
     {
         responseMessage = await ClientService.UpdateClient(messageResult.Data, ClientId);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

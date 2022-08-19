@@ -19,7 +19,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    async Task DeleteReservation()
+    protected async Task DeleteReservation()
     {
         responseMessage = await ReservationService.DeleteReservation(Id);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

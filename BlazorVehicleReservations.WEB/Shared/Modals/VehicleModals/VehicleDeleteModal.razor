@@ -19,7 +19,7 @@
 
     ResponseMessage responseMessage = new ResponseMessage();
 
-    async Task DeleteVehicle()
+    protected async Task DeleteVehicle()
     {
         responseMessage = await VehicleService.DeleteVehicle(VehicleId);
         await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);

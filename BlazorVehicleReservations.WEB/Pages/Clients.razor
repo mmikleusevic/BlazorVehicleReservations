@@ -82,7 +82,7 @@ else
         editContext = new EditContext(clientSearch);
     }
 
-    private void ShowClientModal(int clientId)
+    protected void ShowClientModal(int clientId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(ClientDto.ClientId), clientId);
@@ -90,7 +90,7 @@ else
         Modal.Show<ClientShowModal>("Client", parameters);
     }
 
-    private async Task ShowEditModal(int clientId)
+    protected async Task ShowEditModal(int clientId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(ClientDto.ClientId), clientId);
@@ -105,7 +105,7 @@ else
         }
     }
 
-    private async Task ShowCreateModal()
+    protected async Task ShowCreateModal()
     {
         var formModal = Modal.Show<ClientCreateModal>("Create client");
 
@@ -117,7 +117,7 @@ else
         }
     }
 
-    private async Task ShowDeleteModal(int clientId)
+    protected async Task ShowDeleteModal(int clientId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(ClientDto.ClientId), clientId);
@@ -132,13 +132,13 @@ else
         }
     }
 
-    private async Task ReturnAll()
+    protected async Task ReturnAll()
     {
         messageResultList = await ClientService.GetAllClients();
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
-    private async Task ValidateClientSearch()
+    protected async Task ValidateClientSearch()
     {
         var result = editContext.Validate();
         if(result){

@@ -91,8 +91,8 @@ namespace BlazorVehicleReservations.API.Service
 
             SqlParameter[] parameters = new SqlParameter[]
                 {
+                    new SqlParameter("@ReservationId", reservation.Id),
                     new SqlParameter("@ReservedFrom", reservation.ReservedFrom),
-                    new SqlParameter("@ReservedUntil", reservation.ReservedUntil),
                     new SqlParameter("@ReservedUntil", reservation.ReservedUntil)
                 };
 

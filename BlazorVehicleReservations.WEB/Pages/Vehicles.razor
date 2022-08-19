@@ -81,7 +81,7 @@ else
         editContext = new EditContext(vehicleSearch);
     }
 
-    private async Task ShowEditModal(int vehicleId)
+    protected async Task ShowEditModal(int vehicleId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(VehicleDto.VehicleId), vehicleId);
@@ -96,7 +96,7 @@ else
         }
     }
 
-    private async Task ShowDeleteModal(int vehicleId)
+    protected async Task ShowDeleteModal(int vehicleId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(VehicleDto.VehicleId), vehicleId);
@@ -111,7 +111,7 @@ else
         }
     }
 
-    private async Task ShowCreateModal()
+    protected async Task ShowCreateModal()
     {
         var formModal = Modal.Show<VehicleCreateModal>("Create vehicle");
 
@@ -123,7 +123,7 @@ else
         }
     }
 
-    private void ShowVehicleModal(int vehicleId)
+    protected void ShowVehicleModal(int vehicleId)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(VehicleDto.VehicleId), vehicleId);
@@ -131,13 +131,13 @@ else
         Modal.Show<VehicleShowModal>("Vehicle", parameters);
     }
 
-    private async Task ReturnAll()
+    protected async Task ReturnAll()
     {
         messageResultList = await VehicleService.GetAllVehicles();
         await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
-    private async Task ValidateVehicleSearch()
+    protected async Task ValidateVehicleSearch()
     {
         var result = editContext.Validate();
         if(result){
