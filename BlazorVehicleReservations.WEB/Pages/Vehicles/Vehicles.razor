@@ -8,7 +8,7 @@
     <EditForm EditContext="@editContext" @oninput="ValidateVehicleSearch">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <table>
+        <table class="table">
             <thead class="simple-form">
                 <tr class="form-group">
                     <th class="col"><OnInputText Placeholder="Manufacturer" @bind-Value="vehicleSearch.Manufacturer" /></th>

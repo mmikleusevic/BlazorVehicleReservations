@@ -10,7 +10,7 @@
     <EditForm EditContext="@editContext" @oninput="ValidateClientSearch">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <table>
+        <table class="table">
             <thead class="simple-form">
                 <tr class="form-group">
                     <th class="col"><OnInputText Placeholder="First Name" @bind-Value="clientSearch.FirstName" /></th>

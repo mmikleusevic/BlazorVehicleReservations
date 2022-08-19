@@ -10,7 +10,7 @@
     <EditForm EditContext="@editContext" @oninput="ValidateReservationSearch">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <table>
+        <table class="table">
             <thead class="simple-form">
                 <tr class="form-group">
                     <th class="col"><OnInputText Placeholder="Reserved From" @bind-Value="reservationSearch.ReservedFrom" /></th>
