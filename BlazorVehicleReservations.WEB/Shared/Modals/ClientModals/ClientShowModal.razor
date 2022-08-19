@@ -1,32 +1,32 @@
 ﻿@inject IClientService ClientService
 
-@if (messageResult.Data != null)
+@if (client != null)
 {
     <div class="simple-form">
 
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input disabled="disabled" @bind="@messageResult.Data.FName" type="text" class="form-control" id="firstName"/>
+            <input disabled="disabled" @bind="@client.FName" type="text" class="form-control" id="firstName" />
         </div>
 
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input disabled="disabled" @bind="@messageResult.Data.LName" type="text" class="form-control" id="lastName"/>
+            <input disabled="disabled" @bind="@client.LName" type="text" class="form-control" id="lastName" />
         </div>
 
         <div class="form-group">
             <label for="dob">Date Of Birth</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Dob" type="date" class="form-control" id="dob"/>
+            <input disabled="disabled" @bind="@client.Dob" type="date" class="form-control" id="dob" />
         </div>
 
         <div class="form-group">
             <label for="gender">Gender</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Gender" type="text" class="form-control" id="gender"/>
+            <input disabled="disabled" @bind="@client.Gender" type="text" class="form-control" id="gender"/>
         </div>
 
         <div class="form-group">
             <label for="country">Country</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Country" type="text" class="form-control" id="country"/>
+            <input disabled="disabled" @bind="@client.Country" type="text" class="form-control" id="country" />
         </div>
     </div>
 }
@@ -36,10 +36,10 @@
 
     [Parameter] public int ClientId { get; set; }
 
-    MessageResult<ClientDto> messageResult = new MessageResult<ClientDto>();
+    ClientDto client = new ClientDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageResult = await ClientService.GetClient(ClientId);
+        client = await ClientService.GetClient(ClientId);
     }
 }

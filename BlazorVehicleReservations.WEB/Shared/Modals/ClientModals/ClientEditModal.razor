@@ -1,36 +1,35 @@
 ﻿@inject IClientService ClientService
-@inject IToastPopup ToastPopup
 
-@if (messageResult.Data != null)
+@if (client != null)
 {
-    <EditForm Model="@messageResult.Data" OnValidSubmit="SaveClient">
+    <EditForm Model="@client" OnValidSubmit="SaveClient">
     <DataAnnotationsValidator />
     <ValidationSummary />
         <div class="simple-form">
 
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input @bind="@messageResult.Data.FName" type="text" class="form-control" id="firstName"/>
+                <input @bind="@client.FName" type="text" class="form-control" id="firstName"/>
             </div>
 
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input @bind="@messageResult.Data.LName" type="text" class="form-control" id="lastName"/>
+                <input @bind="@client.LName" type="text" class="form-control" id="lastName" />
             </div>
 
             <div class="form-group">
                 <label for="dob">Date Of Birth</label>
-                <input @bind="@messageResult.Data.Dob" type="date" class="form-control" id="dob"/>
+                <input @bind="@client.Dob" type="date" class="form-control" id="dob" />
             </div>
 
             <div class="form-group">
                 <label for="gender">Gender</label>
-                <input @bind="@messageResult.Data.Gender" type="text" class="form-control" id="gender"/>
+                <input @bind="@client.Gender" type="text" class="form-control" id="gender" />
             </div>
 
             <div class="form-group">
                 <label for="country">Country</label>
-                <input @bind="@messageResult.Data.Country" type="text" class="form-control" id="country"/>
+                <input @bind="@client.Country" type="text" class="form-control" id="country" />
             </div>
 
             <div class="buttonEdit">
@@ -46,18 +45,16 @@
 
     [Parameter] public int ClientId { get; set; }
 
-    MessageResult<ClientDto> messageResult = new MessageResult<ClientDto>();
-
-    ToastPopup toastPopup { get; set; } = default!;
+    ClientDto client = new ClientDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageResult = await ClientService.GetClient(ClientId);
+        client = await ClientService.GetClient(ClientId);
     }
 
     protected async Task SaveClient()
     {
-        await ClientService.UpdateClient(messageResult.Data, ClientId);
+        await ClientService.UpdateClient(client, ClientId);
         await ModalInstance.CloseAsync();
     }
 }

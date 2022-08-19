@@ -1,32 +1,32 @@
 ﻿@inject IVehicleService VehicleService
 
-@if (messageResult.Data != null)
+@if (vehicle != null)
 {
     <div class="simple-form">
 
         <div class="form-group">
             <label for="manufacturer">Manufacturer</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Manufacturer" type="text" class="form-control" id="manufacturer" />
+            <input disabled="disabled" @bind="@vehicle.Manufacturer" type="text" class="form-control" id="manufacturer" />
         </div>
 
         <div class="form-group">
             <label for="model">Model</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Model" type="text" class="form-control" id="model" />
+            <input disabled="disabled" @bind="@vehicle.Model" type="text" class="form-control" id="model" />
         </div>
 
         <div class="form-group">
             <label for="type">Type</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Type" type="text" class="form-control" id="type" />
+            <input disabled="disabled" @bind="@vehicle.Type" type="text" class="form-control" id="type" />
         </div>
 
         <div class="form-group">
             <label for="color">Color</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Color" type="text" class="form-control" id="color" />
+            <input disabled="disabled" @bind="@vehicle.Color" type="text" class="form-control" id="color" />
         </div>
 
         <div class="form-group">
             <label for="year">Year</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Year" type="number" class="form-control" id="year" />
+            <input disabled="disabled" @bind="@vehicle.Year" type="number" class="form-control" id="year" />
         </div>
     </div>
 }
@@ -36,10 +36,10 @@
 
     [Parameter] public int VehicleId { get; set; }
 
-    MessageResult<VehicleDto> messageResult = new MessageResult<VehicleDto>();
+    VehicleDto vehicle = new VehicleDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageResult = await VehicleService.GetVehicle(VehicleId);
+        vehicle = await VehicleService.GetVehicle(VehicleId);
     }
 }

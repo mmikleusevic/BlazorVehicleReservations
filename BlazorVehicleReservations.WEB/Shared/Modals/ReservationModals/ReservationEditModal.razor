@@ -1,20 +1,19 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject IReservationService ReservationService
-@inject IToastPopup ToastPopup
 
-@if(messageReservationToUpdate.Data != null)
+@if(reservation != null)
 {
-    <EditForm Model="@messageReservationToUpdate.Data" OnValidSubmit="SaveReservation">
+    <EditForm Model="@reservation" OnValidSubmit="SaveReservation">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="simple-form">          
             <div class="form-group">
                 <label for="reservationFrom">Reservation From</label>
-                <input @bind="@messageReservationToUpdate.Data.ReservedFrom" type="datetime-local" class="form-control" id="reservationFrom" />
+                <input @bind="@reservation.ReservedFrom" type="datetime-local" class="form-control" id="reservationFrom" />
             </div>
             <div class="form-group">
                 <label for="reservationUntil">Reservation Until</label>
-                <input  @bind="@messageReservationToUpdate.Data.ReservedUntil" type="datetime-local" class="form-control" id="reservationUntil" />
+                <input @bind="@reservation.ReservedUntil" type="datetime-local" class="form-control" id="reservationUntil" />
             </div>
 
             <div class="buttonEdit">
@@ -30,16 +29,16 @@
 
     [Parameter] public int Id { get; set; }
 
-    MessageResult<ReservationDto> messageReservationToUpdate = new MessageResult<ReservationDto>();
+    ReservationDto reservation = new ReservationDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageReservationToUpdate = await ReservationService.GetReservation(Id);
+        reservation = await ReservationService.GetReservation(Id);
     }
 
     protected async Task SaveReservation()
     {
-        await ReservationService.UpdateReservation(messageReservationToUpdate.Data, Id);
+        await ReservationService.UpdateReservation(reservation, Id);
         await ModalInstance.CloseAsync();
 
     }

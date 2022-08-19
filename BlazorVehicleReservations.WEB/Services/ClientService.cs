@@ -33,41 +33,41 @@ namespace BlazorVehicleReservations.WEB.Services
             _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
-        public async Task<MessageResult<List<ClientDto>>> GetAllClients()
+        public async Task<List<ClientDto>> GetAllClients()
         {
-            var result = new MessageResult<List<ClientDto>>();
+            var result = new List<ClientDto>();
             var response = await _httpClient.GetAsync("api/Client");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<ClientDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<ClientDto>>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<ClientDto>> GetClient(int id)
+        public async Task<ClientDto> GetClient(int id)
         {
-            var result = new MessageResult<ClientDto>();
+            var result = new ClientDto();
             var response = await _httpClient.GetAsync($"api/Client/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<ClientDto>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<ClientDto>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<List<ClientDto>>> SearchClient(ClientSearch clientSearch)
+        public async Task<List<ClientDto>> SearchClient(ClientSearch clientSearch)
         {
             HttpContent httpContent = new StringContent(JsonSerializer.Serialize(clientSearch), Encoding.UTF8, "application/json");
-            var result = new MessageResult<List<ClientDto>>();
+            var result = new List<ClientDto>();
             var response = await _httpClient.PostAsync("api/Client/search", httpContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<ClientDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<ClientDto>>(responseStream);
             }
 
             return result;

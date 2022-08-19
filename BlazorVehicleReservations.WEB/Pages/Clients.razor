@@ -23,11 +23,11 @@
         </table>
     </EditForm>
 }
-@if (messageResultList == null)
+@if (clientList == null)
 {
     <p>Loading...</p>
 }
-else if (messageResultList.Data != null)
+else if (clientList != null)
 {
     <table class="table table-striped">
         <thead>
@@ -41,7 +41,7 @@ else if (messageResultList.Data != null)
             </tr>
         </thead>
         <tbody>
-            @foreach (var data in messageResultList.Data)
+            @foreach (var data in clientList)
             {
                 <tr>
                     <td>@data.FName</td>
@@ -70,7 +70,7 @@ else
 
     [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
-    private MessageResult<List<ClientDto>> messageResultList { get; set; } = default!;
+    private List<ClientDto> clientList { get; set; } = default!;
 
     private ClientSearch clientSearch = new ClientSearch();
 
@@ -134,14 +134,14 @@ else
 
     protected async Task ReturnAll()
     {
-        messageResultList = await ClientService.GetAllClients();
+        clientList = await ClientService.GetAllClients();
     }
 
     protected async Task ValidateClientSearch()
     {
         var result = editContext.Validate();
         if(result){
-            messageResultList = await ClientService.SearchClient(clientSearch);
+            clientList = await ClientService.SearchClient(clientSearch);
         }
     }
 

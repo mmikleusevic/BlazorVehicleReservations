@@ -22,11 +22,11 @@
     </EditForm>
 }
 
-@if (messageResultList == null)
+@if (vehicleList == null)
 {
     <p>Loading...</p>
 }
-else if (messageResultList.Data != null)
+else if (vehicleList != null)
 {
     <table class="table table-striped">
         <thead>
@@ -40,7 +40,7 @@ else if (messageResultList.Data != null)
             </tr>
         </thead>
         <tbody>
-            @foreach (var data in messageResultList.Data)
+            @foreach (var data in vehicleList)
             {
                 <tr>
                     <td>@data.Manufacturer</td>
@@ -69,7 +69,7 @@ else
 
     [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
-    private MessageResult<List<VehicleDto>> messageResultList { get; set; } = default!;
+    private List<VehicleDto> vehicleList { get; set; } = default!;
 
     private VehicleSearch vehicleSearch = new VehicleSearch();
 
@@ -133,14 +133,14 @@ else
 
     protected async Task ReturnAll()
     {
-        messageResultList = await VehicleService.GetAllVehicles();
+        vehicleList = await VehicleService.GetAllVehicles();
     }
 
     protected async Task ValidateVehicleSearch()
     {
         var result = editContext.Validate();
         if(result){
-            messageResultList = await VehicleService.SearchVehicles(vehicleSearch);
+            vehicleList = await VehicleService.SearchVehicles(vehicleSearch);
         }
     }
 

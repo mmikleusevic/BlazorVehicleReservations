@@ -1,66 +1,66 @@
 ﻿@inject IReservationService ReservationService
 
-@if (messageResult.Data != null)
+@if (reservation != null)
 {
     <div class="simple-form">
 
         <div class="form-group">
             <label for="reservedFrom">Reserved From</label>
-            <input disabled="disabled" @bind="@messageResult.Data.ReservedFrom" type="text" class="form-control" id="reservedFrom" />
+            <input disabled="disabled" @bind="@reservation.ReservedFrom" type="text" class="form-control" id="reservedFrom" />
         </div>
 
         <div class="form-group">
             <label for="reservedUntil">Reserved Until</label>
-            <input disabled="disabled" @bind="@messageResult.Data.ReservedUntil" type="text" class="form-control" id="reservedUntil" />
+            <input disabled="disabled" @bind="@reservation.ReservedUntil" type="text" class="form-control" id="reservedUntil" />
         </div>
 
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input disabled="disabled" @bind="@messageResult.Data.FirstName" type="text" class="form-control" id="firstName" />
+            <input disabled="disabled" @bind="@reservation.FirstName" type="text" class="form-control" id="firstName" />
         </div>
 
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input disabled="disabled" @bind="@messageResult.Data.LastName" type="text" class="form-control" id="lastName" />
+            <input disabled="disabled" @bind="@reservation.LastName" type="text" class="form-control" id="lastName" />
         </div>
 
         <div class="form-group">
             <label for="dob">Date of Birth</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Dob" type="date" class="form-control" id="dob" />
+            <input disabled="disabled" @bind="@reservation.Dob" type="date" class="form-control" id="dob" />
         </div>
         <div class="form-group">
             <label for="gender">Gender</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Gender" type="text" class="form-control" id="gender" />
+            <input disabled="disabled" @bind="@reservation.Gender" type="text" class="form-control" id="gender" />
         </div>
 
         <div class="form-group">
             <label for="country">Country</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Country" type="text" class="form-control" id="country" />
+            <input disabled="disabled" @bind="@reservation.Country" type="text" class="form-control" id="country" />
         </div>
 
         <div class="form-group">
             <label for="manufacturer">Manufacturer</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Manufacturer" type="text" class="form-control" id="manufacturer" />
+            <input disabled="disabled" @bind="@reservation.Manufacturer" type="text" class="form-control" id="manufacturer" />
         </div>
 
         <div class="form-group">
             <label for="model">Model</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Model" type="text" class="form-control" id="model" />
+            <input disabled="disabled" @bind="@reservation.Model" type="text" class="form-control" id="model" />
         </div>
 
         <div class="form-group">
             <label for="type">Type</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Type" type="text" class="form-control" id="type" />
+            <input disabled="disabled" @bind="@reservation.Type" type="text" class="form-control" id="type" />
         </div>
 
         <div class="form-group">
             <label for="color">Color</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Color" type="text" class="form-control" id="color" />
+            <input disabled="disabled" @bind="@reservation.Color" type="text" class="form-control" id="color" />
         </div>
 
         <div class="form-group">
             <label for="year">Year</label>
-            <input disabled="disabled" @bind="@messageResult.Data.Year" type="number" class="form-control" id="year" />
+            <input disabled="disabled" @bind="@reservation.Year" type="number" class="form-control" id="year" />
         </div>
     </div>
 }
@@ -70,10 +70,10 @@
 
     [Parameter] public int Id { get; set; }
 
-    MessageResult<ReservationDto> messageResult = new MessageResult<ReservationDto>();
+    ReservationDto reservation = new ReservationDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageResult = await ReservationService.GetReservation(Id);
+        reservation = await ReservationService.GetReservation(Id);
     }
 }

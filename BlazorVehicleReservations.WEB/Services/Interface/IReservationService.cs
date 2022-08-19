@@ -6,12 +6,12 @@ namespace BlazorVehicleReservations.WEB.Services.Interface
 {
     public interface IReservationService
     {
-        Task<MessageResult<List<ReservationDto>>> GetAllReservations();
-        Task<MessageResult<List<ReservationDto>>> GetAllCurrentReservations();
-        Task<MessageResult<ReservationDto>> GetReservation(int id);
+        Task<List<ReservationDto>> GetAllReservations();
+        Task<List<ReservationDto>> GetAllCurrentReservations();
+        Task<ReservationDto> GetReservation(int id);
         Task DeleteReservation(int id);
         Task UpdateReservation(ReservationDto reservationDto, int id);
-        Task<MessageResult<List<ReservationDto>>> SearchReservations(ReservationSearch reservationSearch);
+        Task<List<ReservationDto>> SearchReservations(ReservationSearch reservationSearch);
         Task CreateReservations(ReservationDto reservationDto);
     }
 }

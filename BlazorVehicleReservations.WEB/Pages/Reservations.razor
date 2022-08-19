@@ -30,10 +30,11 @@
         </table>   
     </EditForm>
 }
-@if(messageResultList == null){
+@if (reservationsList == null)
+{
     <p>Loading...</p>
 }
-else if(messageResultList.Data != null)
+else if (reservationsList != null)
 {
     <table class="table table-striped">
         <thead>
@@ -54,7 +55,7 @@ else if(messageResultList.Data != null)
             </tr>
         </thead>
         <tbody>
-            @foreach (var data in messageResultList.Data)
+            @foreach (var data in reservationsList)
             {
                 <tr>
                     <td>@(data.ReservedFrom.HasValue ? @data.ReservedFrom.Value.ToShortDateString() : "")</td>
@@ -88,7 +89,7 @@ else if(messageResultList.Data != null)
 
     [CascadingParameter] private IModalService Modal { get; set; } = default!;
 
-    private MessageResult<List<ReservationDto>> messageResultList { get; set; } = default!;
+    private List<ReservationDto> reservationsList { get; set; } = default!;
 
     private ReservationSearch reservationSearch = new ReservationSearch();
 
@@ -152,14 +153,14 @@ else if(messageResultList.Data != null)
 
     protected async Task ReturnAll()
     {
-        messageResultList = await ReservationService.GetAllReservations();
+        reservationsList = await ReservationService.GetAllReservations();
     }
 
     protected async Task ValidateReservationSearch()
     {
         var result = editContext.Validate();
         if(result){
-            messageResultList = await ReservationService.SearchReservations(reservationSearch);
+            reservationsList = await ReservationService.SearchReservations(reservationSearch);
         }
     }
 

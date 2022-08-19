@@ -1,36 +1,35 @@
 ﻿@inject IVehicleService VehicleService
-@inject IToastPopup ToastPopup
 
-@if(messageResult.Data != null)
+@if (vehicle != null)
 {
-    <EditForm Model="@messageResult.Data" OnValidSubmit="SaveVehicle">
+    <EditForm Model="@vehicle" OnValidSubmit="SaveVehicle">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="simple-form">
 
         <div class="form-group">
             <label for="manufacturer">Manufacturer</label>
-            <input @bind="@messageResult.Data.Manufacturer" type="text" class="form-control" id="manufacturer" />
+                <input @bind="@vehicle.Manufacturer" type="text" class="form-control" id="manufacturer" />
         </div>
 
         <div class="form-group">
             <label for="model">Model</label>
-            <input @bind="@messageResult.Data.Model" type="text" class="form-control" id="model" />
+            <input @bind="@vehicle.Model" type="text" class="form-control" id="model" />
         </div>
 
         <div class="form-group">
             <label for="type">Type</label>
-            <input @bind="@messageResult.Data.Type" type="text" class="form-control" id="type" />
+                <input @bind="@vehicle.Type" type="text" class="form-control" id="type" />
         </div>
 
         <div class="form-group">
             <label for="color">Color</label>
-            <input @bind="@messageResult.Data.Color" type="text" class="form-control" id="color" />
+            <input @bind="@vehicle.Color" type="text" class="form-control" id="color" />
         </div>
 
         <div class="form-group">
             <label for="year">Year</label>
-            <input @bind="@messageResult.Data.Year" min="1900" max="2100" type="number" class="form-control" id="year" />
+                <input @bind="@vehicle.Year" min="1900" max="2100" type="number" class="form-control" id="year" />
         </div>
 
         <div class="buttonEdit">
@@ -47,16 +46,16 @@
 
     [Parameter] public int VehicleId { get; set; }
 
-    MessageResult<VehicleDto> messageResult = new MessageResult<VehicleDto>();
+    VehicleDto vehicle = new VehicleDto();
 
     protected override async Task OnInitializedAsync()
     {
-        messageResult = await VehicleService.GetVehicle(VehicleId);
+        vehicle = await VehicleService.GetVehicle(VehicleId);
     }
 
     protected async Task SaveVehicle()
     {
-        await VehicleService.UpdateVehicle(messageResult.Data, VehicleId);
+        await VehicleService.UpdateVehicle(vehicle, VehicleId);
         await ModalInstance.CloseAsync();
     }
 }

@@ -32,54 +32,54 @@ namespace BlazorVehicleReservations.WEB.Services
             _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
-        public async Task<MessageResult<List<ReservationDto>>> GetAllCurrentReservations()
+        public async Task<List<ReservationDto>> GetAllCurrentReservations()
         {
-            var result = new MessageResult<List<ReservationDto>>();
+            var result = new List<ReservationDto>();
             var response = await _httpClient.GetAsync("api/Reservation/current");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
             }
 
             return result;
             }
 
-        public async Task<MessageResult<List<ReservationDto>>> GetAllReservations()
+        public async Task<List<ReservationDto>> GetAllReservations()
         {
-            var result = new MessageResult<List<ReservationDto>>();
+            var result = new List<ReservationDto>();
             var response = await _httpClient.GetAsync("api/Reservation");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<ReservationDto>> GetReservation(int id)
+        public async Task<ReservationDto> GetReservation(int id)
         {
-            var result = new MessageResult<ReservationDto>();
+            var result = new ReservationDto();
             var response = await _httpClient.GetAsync($"api/Reservation/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<ReservationDto>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<ReservationDto>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<List<ReservationDto>>> SearchReservations(ReservationSearch reservationSearch)
+        public async Task<List<ReservationDto>> SearchReservations(ReservationSearch reservationSearch)
         {
             HttpContent httpContent = new StringContent(JsonSerializer.Serialize(reservationSearch), Encoding.UTF8, "application/json");
-            var result = new MessageResult<List<ReservationDto>>();
+            var result = new List<ReservationDto>();
             var response = await _httpClient.PostAsync("api/Reservation/search", httpContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
             }
 
             return result;

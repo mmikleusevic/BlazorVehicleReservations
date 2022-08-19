@@ -27,40 +27,40 @@ namespace BlazorVehicleReservations.WEB.Services
             _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
-        public async Task<MessageResult<List<VehicleDto>>> GetAllVehicles()
+        public async Task<List<VehicleDto>> GetAllVehicles()
         {
-            var result = new MessageResult<List<VehicleDto>>();
+            var result = new List<VehicleDto>();
             var response = await _httpClient.GetAsync("api/Vehicle");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<VehicleDto>> GetVehicle(int id)
+        public async Task<VehicleDto> GetVehicle(int id)
         {
-            var result = new MessageResult<VehicleDto>();
+            var result = new VehicleDto();
             var response = await _httpClient.GetAsync($"api/Vehicle/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<VehicleDto>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<VehicleDto>(responseStream);
             }
 
             return result;
         }
 
-        public async Task<MessageResult<List<VehicleDto>>> GetAllAvailableVehicles()
+        public async Task<List<VehicleDto>> GetAllAvailableVehicles()
         {
-            var result = new MessageResult<List<VehicleDto>>();
+            var result = new List<VehicleDto>();
             var response = await _httpClient.GetAsync("api/Vehicle/available");
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
             }
 
             return result;
@@ -80,15 +80,15 @@ namespace BlazorVehicleReservations.WEB.Services
             _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
-        public async Task<MessageResult<List<VehicleDto>>> SearchVehicles(VehicleSearch vehicleSearch)
+        public async Task<List<VehicleDto>> SearchVehicles(VehicleSearch vehicleSearch)
         {
             HttpContent httpContent = new StringContent(JsonSerializer.Serialize(vehicleSearch), Encoding.UTF8, "application/json");
-            var result = new MessageResult<List<VehicleDto>>();
+            var result = new List<VehicleDto>();
             var response = await _httpClient.PostAsync("api/Vehicle/search", httpContent);
             if (response.IsSuccessStatusCode)
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
-                result.Data = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
+                result = await JsonSerializer.DeserializeAsync<List<VehicleDto>>(responseStream);
             }
 
             return result;
