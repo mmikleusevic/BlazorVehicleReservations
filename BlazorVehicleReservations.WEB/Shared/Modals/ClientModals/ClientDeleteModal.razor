@@ -17,11 +17,9 @@
 
     [Parameter] public int ClientId { get; set; }
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected async Task DeleteClient()
     {
-        responseMessage = await ClientService.DeleteClient(ClientId);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ClientService.DeleteClient(ClientId);
+        await ModalInstance.CloseAsync();
     }
 }

@@ -17,11 +17,9 @@
 
     [Parameter] public int Id { get; set; }
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected async Task DeleteReservation()
     {
-        responseMessage = await ReservationService.DeleteReservation(Id);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ReservationService.DeleteReservation(Id);
+        await ModalInstance.CloseAsync();
     }
 }

@@ -26,11 +26,11 @@ namespace BlazorVehicleReservations.API.Service
 
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@FirstName", client.FirstName== null ? DBNull.Value : client.FirstName),
-                new SqlParameter("@LastName", client.LastName== null ? DBNull.Value : client.LastName),
-                new SqlParameter("@Dob", client.Dob== null ? DBNull.Value : client.Dob),
-                new SqlParameter("@Gender", client.Gender== null ? DBNull.Value : client.Gender),
-                new SqlParameter("@Country", client.Country== null ? DBNull.Value : client.Country)
+                new SqlParameter("@FirstName", client.FirstName == null ? DBNull.Value : client.FirstName),
+                new SqlParameter("@LastName", client.LastName == null ? DBNull.Value : client.LastName),
+                new SqlParameter("@Dob", client.Dob == null ? DBNull.Value : client.Dob),
+                new SqlParameter("@Gender", client.Gender == null ? DBNull.Value : client.Gender),
+                new SqlParameter("@Country", client.Country == null ? DBNull.Value : client.Country)
             };
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spCreateClient @FirstName, @LastName, @Dob, @Gender, @Country",
@@ -81,11 +81,11 @@ namespace BlazorVehicleReservations.API.Service
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@ClientId", client.Id),
-                new SqlParameter("@FirstName", client.FirstName),
-                new SqlParameter("@LastName", client.LastName),
-                new SqlParameter("@Dob", client.Dob),
-                new SqlParameter("@Gender", client.Gender),
-                new SqlParameter("@Country", client.Country)
+                new SqlParameter("@FirstName", client.FirstName == null ? DBNull.Value : client.FirstName),
+                new SqlParameter("@LastName", client.LastName == null ? DBNull.Value : client.LastName),
+                new SqlParameter("@Dob", client.Dob == null ? DBNull.Value : client.Dob),
+                new SqlParameter("@Gender", client.Gender == null ? DBNull.Value : client.Gender),
+                new SqlParameter("@Country", client.Country == null ? DBNull.Value : client.Country)
             };
 
             return await _context.Database.ExecuteSqlRawAsync($"exec spUpdateClient @ClientId, @FirstName, @LastName, @Dob, @Gender, @Country",

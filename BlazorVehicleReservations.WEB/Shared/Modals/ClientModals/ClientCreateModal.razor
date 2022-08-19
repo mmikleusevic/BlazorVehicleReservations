@@ -44,11 +44,9 @@
 
     ClientDto client = new ClientDto();
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected async Task SaveClient()
     {
-        responseMessage = await ClientService.CreateClient(client);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ClientService.CreateClient(client);
+        await ModalInstance.CloseAsync();
     }
 }

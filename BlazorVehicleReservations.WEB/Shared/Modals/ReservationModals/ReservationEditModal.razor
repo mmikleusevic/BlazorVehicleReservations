@@ -30,8 +30,6 @@
 
     [Parameter] public int Id { get; set; }
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     MessageResult<ReservationDto> messageReservationToUpdate = new MessageResult<ReservationDto>();
 
     protected override async Task OnInitializedAsync()
@@ -41,8 +39,8 @@
 
     protected async Task SaveReservation()
     {
-        responseMessage = await ReservationService.UpdateReservation(messageReservationToUpdate.Data, Id);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ReservationService.UpdateReservation(messageReservationToUpdate.Data, Id);
+        await ModalInstance.CloseAsync();
 
     }
 }

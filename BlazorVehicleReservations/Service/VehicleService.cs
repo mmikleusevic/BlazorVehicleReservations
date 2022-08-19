@@ -86,11 +86,11 @@ namespace BlazorVehicleReservations.API.Service
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@VehicleId", vehicleDto.VehicleId),
-                new SqlParameter("@Manufacturer", vehicleDto.Manufacturer),
-                new SqlParameter("@Model", vehicleDto.Model),
-                new SqlParameter("@Type", vehicleDto.Type),
-                new SqlParameter("@Color", vehicleDto.Color),
-                new SqlParameter("@Year", vehicleDto.Year)
+                new SqlParameter("@Manufacturer", vehicle.Manufacturer == null ? DBNull.Value : vehicle.Manufacturer),
+                new SqlParameter("@Model", vehicle.Model == null ? DBNull.Value : vehicle.Model),
+                new SqlParameter("@Type", vehicle.Type == null ? DBNull.Value : vehicle.Type),
+                new SqlParameter("@Color", vehicle.Color == null ? DBNull.Value : vehicle.Color),
+                new SqlParameter("@Year", vehicle.Year == null ? DBNull.Value : vehicle.Year)
             };
 
             return await _context.Database.ExecuteSqlRawAsync("exec spUpdateVehicle @VehicleId, @Manufacturer, @Model, @Type, @Color, @Year", parameters);

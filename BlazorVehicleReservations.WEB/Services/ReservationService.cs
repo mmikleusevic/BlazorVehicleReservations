@@ -6,57 +6,30 @@ using System.Net.Http;
 using System.Net;
 using System.Text.Json;
 using System.Text;
+using BlazorVehicleReservations.WEB.Models.Interface;
 
 namespace BlazorVehicleReservations.WEB.Services
 {
     public class ReservationService : IReservationService
     {
         private readonly HttpClient _httpClient;
-        public ReservationService(HttpClient httpClient)
+        private readonly IToastPopup _toastPopup;
+        public ReservationService(HttpClient httpClient, IToastPopup toastPopup)
         {
             _httpClient = httpClient;
+            _toastPopup = toastPopup;
         }
-        public async Task<ResponseMessage> CreateReservations(ReservationDto reservationDto)
+        public async Task CreateReservations(ReservationDto reservationDto)
         {
             HttpContent httpContent = new StringContent(JsonSerializer.Serialize(reservationDto), Encoding.UTF8, "application/json");
-            var responseMessage = new ResponseMessage();
             var response = await _httpClient.PostAsync($"api/Reservation", httpContent);
-            if (response.StatusCode == HttpStatusCode.Created)
-            {
-                responseMessage.Message = "Reservation succesfully created";
-
-            }
-            else if (response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                responseMessage.Message = "Reservation could not be created";
-            }
-            else
-            {
-                responseMessage.Message = "Server error occured";
-            }
-            responseMessage.StatusCode = (int)response.StatusCode;
-            return responseMessage;
+            _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
-        public async Task<ResponseMessage> DeleteReservation(int id)
+        public async Task DeleteReservation(int id)
         {
-            var responseMessage = new ResponseMessage();
             var response = await _httpClient.DeleteAsync($"api/Reservation/{id}");
-            if (response.StatusCode == HttpStatusCode.NoContent)
-            {
-                responseMessage.Message = "Reservation succesfully deleted";
-
-            }
-            else if (response.StatusCode == HttpStatusCode.BadRequest)
-            {
-                responseMessage.Message = "Reservation not found";
-            }
-            else
-            {
-                responseMessage.Message = "Server error occured";
-            }
-            responseMessage.StatusCode = (int)response.StatusCode;
-            return responseMessage;
+            _toastPopup.ReturnAppropriateMessageDialog(response);
         }
 
         public async Task<MessageResult<List<ReservationDto>>> GetAllCurrentReservations()
@@ -67,21 +40,10 @@ namespace BlazorVehicleReservations.WEB.Services
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
-                result.Message = "Data succesfully returned";
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                result.Data = null;
-                result.Message = "Data not found";
-            }
-            else
-            {
-                result.Data = null;
-                result.Message = "Server error occured";
-            }
-            result.StatusCode = (int)response.StatusCode;
+
             return result;
-        }
+            }
 
         public async Task<MessageResult<List<ReservationDto>>> GetAllReservations()
         {
@@ -91,19 +53,8 @@ namespace BlazorVehicleReservations.WEB.Services
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
-                result.Message = "Data succesfully returned";
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                result.Data = null;
-                result.Message = "Data not found";
-            }
-            else
-            {
-                result.Data = null;
-                result.Message = "Server error occured";
-            }
-            result.StatusCode = (int)response.StatusCode;
+
             return result;
         }
 
@@ -115,19 +66,8 @@ namespace BlazorVehicleReservations.WEB.Services
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 result.Data = await JsonSerializer.DeserializeAsync<ReservationDto>(responseStream);
-                result.Message = "Data succesfully returned";
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                result.Data = null;
-                result.Message = "Data not found";
-            }
-            else
-            {
-                result.Data = null;
-                result.Message = "Server error occured";
-            }
-            result.StatusCode = (int)response.StatusCode;
+
             return result;
         }
 
@@ -140,46 +80,16 @@ namespace BlazorVehicleReservations.WEB.Services
             {
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 result.Data = await JsonSerializer.DeserializeAsync<List<ReservationDto>>(responseStream);
-                result.Message = "Data succesfully returned";
             }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                result.Data = null;
-                result.Message = "Data not found";
-            }
-            else
-            {
-                result.Data = null;
-                result.Message = "Server error occured";
-            }
-            result.StatusCode = (int)response.StatusCode;
+
             return result;
         }
 
-        public async Task<ResponseMessage> UpdateReservation(ReservationDto reservationDto, int id)
+        public async Task UpdateReservation(ReservationDto reservationDto, int id)
         {
             HttpContent httpContent = new StringContent(JsonSerializer.Serialize(reservationDto), Encoding.UTF8, "application/json");
-            var responseMessage = new ResponseMessage();
             var response = await _httpClient.PutAsync($"api/Reservation/{id}", httpContent);
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                responseMessage.Message = "Reservation succesfully updated";
-
-            }
-            else if (response.StatusCode == HttpStatusCode.NoContent)
-            {
-                responseMessage.Message = "Reservation was not updated";
-            }
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-            {
-                responseMessage.Message = "Reservation not found";
-            }
-            else
-            {
-                responseMessage.Message = "Server error occured";
-            }
-            responseMessage.StatusCode = (int)response.StatusCode;
-            return responseMessage;
+            _toastPopup.ReturnAppropriateMessageDialog(response);
         }
     }
 }

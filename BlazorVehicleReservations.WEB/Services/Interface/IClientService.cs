@@ -8,9 +8,9 @@ namespace BlazorVehicleReservations.WEB.Services.Interface
     {
         Task<MessageResult<List<ClientDto>>> GetAllClients();
         Task<MessageResult<ClientDto>> GetClient(int id);
-        Task<ResponseMessage> DeleteClient(int id);
-        Task<ResponseMessage> UpdateClient(ClientDto clientDto, int id);
+        Task DeleteClient(int id);
+        Task UpdateClient(ClientDto clientDto, int id);
         Task<MessageResult<List<ClientDto>>> SearchClient(ClientSearch clientSearch);
-        Task<ResponseMessage> CreateClient(ClientDto clientDto);
+        Task CreateClient(ClientDto clientDto);
     }
 }

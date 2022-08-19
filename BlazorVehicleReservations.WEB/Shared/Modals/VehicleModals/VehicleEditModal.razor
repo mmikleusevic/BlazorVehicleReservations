@@ -49,8 +49,6 @@
 
     MessageResult<VehicleDto> messageResult = new MessageResult<VehicleDto>();
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected override async Task OnInitializedAsync()
     {
         messageResult = await VehicleService.GetVehicle(VehicleId);
@@ -58,7 +56,7 @@
 
     protected async Task SaveVehicle()
     {
-        responseMessage = await VehicleService.UpdateVehicle(messageResult.Data, VehicleId);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await VehicleService.UpdateVehicle(messageResult.Data, VehicleId);
+        await ModalInstance.CloseAsync();
     }
 }

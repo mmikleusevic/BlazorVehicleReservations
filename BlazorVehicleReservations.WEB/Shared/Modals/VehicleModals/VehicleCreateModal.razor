@@ -1,5 +1,5 @@
 ﻿@inject IVehicleService VehicleService
-@inject IToastPopup ToastPopup
+@inject IToastService ToastService
 
 <EditForm Model="@vehicle" OnValidSubmit="SaveVehicle">
     <DataAnnotationsValidator />
@@ -46,11 +46,9 @@
 
     VehicleDto vehicle = new VehicleDto();
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected async Task SaveVehicle()
     {
-        responseMessage = await VehicleService.CreateVehicle(vehicle);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await VehicleService.CreateVehicle(vehicle);
+        await ModalInstance.CloseAsync();
     }
 }

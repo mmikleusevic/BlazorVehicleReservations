@@ -135,7 +135,6 @@ else
     protected async Task ReturnAll()
     {
         messageResultList = await ClientService.GetAllClients();
-        await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
     protected async Task ValidateClientSearch()

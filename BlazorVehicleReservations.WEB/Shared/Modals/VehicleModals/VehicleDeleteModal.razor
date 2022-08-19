@@ -17,11 +17,9 @@
 
     [Parameter] public int VehicleId { get; set; }
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     protected async Task DeleteVehicle()
     {
-        responseMessage = await VehicleService.DeleteVehicle(VehicleId);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await VehicleService.DeleteVehicle(VehicleId);
+        await ModalInstance.CloseAsync();
     }
 }

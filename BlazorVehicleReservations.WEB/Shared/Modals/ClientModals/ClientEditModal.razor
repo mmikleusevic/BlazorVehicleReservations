@@ -48,8 +48,6 @@
 
     MessageResult<ClientDto> messageResult = new MessageResult<ClientDto>();
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     ToastPopup toastPopup { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
@@ -59,7 +57,7 @@
 
     protected async Task SaveClient()
     {
-        responseMessage = await ClientService.UpdateClient(messageResult.Data, ClientId);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ClientService.UpdateClient(messageResult.Data, ClientId);
+        await ModalInstance.CloseAsync();
     }
 }

@@ -134,7 +134,6 @@ else
     protected async Task ReturnAll()
     {
         messageResultList = await VehicleService.GetAllVehicles();
-        await ToastPopup.ReturnAppropriateMessageMain(messageResultList.Message, messageResultList.StatusCode);
     }
 
     protected async Task ValidateVehicleSearch()

@@ -1,6 +1,7 @@
 ﻿using Blazored.Modal;
 using Blazored.Toast.Services;
 using BlazorVehicleReservations.WEB.Models.Interface;
+using System.Net;
 
 namespace BlazorVehicleReservations.WEB.Models
 {
@@ -12,46 +13,29 @@ namespace BlazorVehicleReservations.WEB.Models
             _toastService = toastService;
         }
 
-        public async Task ReturnAppropriateMessageDialog(ResponseMessage messageResult, BlazoredModalInstance ModalInstance)
-        {           
-            if (messageResult.StatusCode >= 200 && messageResult.StatusCode < 300 && messageResult.StatusCode != 204)
-            {
-                _toastService.ShowSuccess(messageResult.Message);
-            }
-            else if(messageResult.StatusCode == 204)
-            {
-                _toastService.ShowInfo(messageResult.Message);
-            }
-            else if (messageResult.StatusCode >= 400 && messageResult.StatusCode < 500)
-            {
-                _toastService.ShowWarning(messageResult.Message);
-            }
-            else
-            {
-                _toastService.ShowError(messageResult.Message);
-            }
-            await ModalInstance.CloseAsync();
-        }
-
-        public async Task ReturnAppropriateMessageMain(string message, int statusCode)
+        public void ReturnAppropriateMessageDialog(HttpResponseMessage? response )
         {
-            if (statusCode >= 200 && statusCode < 300)
+            switch (response.StatusCode)
             {
-                _toastService.ShowSuccess(message);
+                case HttpStatusCode.OK:
+                    _toastService.ShowSuccess(response.ReasonPhrase);
+                    break;
+                case HttpStatusCode.Created:
+                    _toastService.ShowSuccess(response.ReasonPhrase);
+                    break;
+                case HttpStatusCode.NoContent:
+                    _toastService.ShowInfo(response.ReasonPhrase);
+                    break;
+                case HttpStatusCode.NotFound:
+                    _toastService.ShowWarning(response.ReasonPhrase);
+                    break;
+                case HttpStatusCode.BadRequest:
+                    _toastService.ShowWarning(response.ReasonPhrase);
+                    break;
+                case HttpStatusCode.InternalServerError:
+                    _toastService.ShowError(response.ReasonPhrase);
+                    break;
             }
-            else if (statusCode == 204)
-            {
-                _toastService.ShowInfo(message);
-            }
-            else if (statusCode == 404)
-            {
-                _toastService.ShowWarning(message);
-            }
-            else
-            {
-                _toastService.ShowError(message);
-            }
-            await Task.CompletedTask;
         }
     }
 }

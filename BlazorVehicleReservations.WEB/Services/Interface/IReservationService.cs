@@ -9,9 +9,9 @@ namespace BlazorVehicleReservations.WEB.Services.Interface
         Task<MessageResult<List<ReservationDto>>> GetAllReservations();
         Task<MessageResult<List<ReservationDto>>> GetAllCurrentReservations();
         Task<MessageResult<ReservationDto>> GetReservation(int id);
-        Task<ResponseMessage> DeleteReservation(int id);
-        Task<ResponseMessage> UpdateReservation(ReservationDto reservationDto, int id);
+        Task DeleteReservation(int id);
+        Task UpdateReservation(ReservationDto reservationDto, int id);
         Task<MessageResult<List<ReservationDto>>> SearchReservations(ReservationSearch reservationSearch);
-        Task<ResponseMessage> CreateReservations(ReservationDto reservationDto);
+        Task CreateReservations(ReservationDto reservationDto);
     }
 }

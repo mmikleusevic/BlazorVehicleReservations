@@ -54,8 +54,6 @@
 
     ReservationDto reservation = new ReservationDto();
 
-    ResponseMessage responseMessage = new ResponseMessage();
-
     MessageResult<List<ClientDto>> messageResultClientList = new MessageResult<List<ClientDto>>();
 
     MessageResult<List<VehicleDto>> messageResultAvailableVehicleList = new MessageResult<List<VehicleDto>>();
@@ -69,7 +67,7 @@
     protected async Task SaveReservation()
     {
         reservation.Type = messageResultAvailableVehicleList.Data.FirstOrDefault(a => a.VehicleId == reservation.VehicleId).Type;
-        responseMessage = await ReservationService.CreateReservations(reservation);
-        await ToastPopup.ReturnAppropriateMessageDialog(responseMessage, ModalInstance);
+        await ReservationService.CreateReservations(reservation);
+        await ModalInstance.CloseAsync();
     }
 }

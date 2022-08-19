@@ -10,9 +10,9 @@ namespace BlazorVehicleReservations.WEB.Services.Interface
         Task<MessageResult<List<VehicleDto>>> GetAllVehicles();
         Task<MessageResult<List<VehicleDto>>> GetAllAvailableVehicles();
         Task<MessageResult<VehicleDto>> GetVehicle(int id);
-        Task<ResponseMessage> DeleteVehicle(int id);
-        Task<ResponseMessage> UpdateVehicle(VehicleDto vehicleDto, int id);
+        Task DeleteVehicle(int id);
+        Task UpdateVehicle(VehicleDto vehicleDto, int id);
         Task<MessageResult<List<VehicleDto>>> SearchVehicles(VehicleSearch vehicleSearch);
-        Task<ResponseMessage> CreateVehicle(VehicleDto vehicleDto);
+        Task CreateVehicle(VehicleDto vehicleDto);
     }
 }
