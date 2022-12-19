@@ -1,1 +1,1 @@
-InfoBip - zadatak za database developera
+Infobip - zadatak za database developera
