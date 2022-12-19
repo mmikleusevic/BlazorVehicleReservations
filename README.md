@@ -1,1 +1,1 @@
-# BlazorVehicleReservations
+InfoBip - zadatak za database developera
