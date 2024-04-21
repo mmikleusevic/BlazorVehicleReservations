@@ -1,42 +1,36 @@
-Autor: TeamDB
+Author: TeamDB
 
-Opis:
+Description:
 
-Potrebno je napraviti WEB aplikaciju koja služi za iznajmljivanje vozila.
+It is necessary to create a web application for vehicle rental.
 
-- Aplikacija treba imati funkcionalnosti:
-    - pregled klijenata
-    - pregled vozila
-    - unosa rezervacije
-    - pregled upisanih rezervacija
-    - brisanje rezervacija (opcionalno)
-  
-Specifikacija podataka i pravila:
+The application should include the following functionalities:
+   - Client overview
+   - Vehicle overview
+   - Reservation entry
+   - Overview of entered reservations
+   - Reservation deletion (optional)
+   - Data specification and rules:
 
-Entiteti za rad sustava:
+Entities for system operation:
 
-    - Klijent treba minimalno sadržavati podatke – ime, prezime, godina rođenja, spol, država
-    - Vozilo treba minimalno sadržavati podatke - proizvođač(npr. Kia, Porsche...), tip (npr. suv,
-        karavan, sedan...), boja, godina
-    - Rezervacija mora sadržavati informacije o vremenu iznajmljivanja (od, do), klijentu i vozilu.
+    - The Client entity should contain at least the following data: first name, last name, year of birth, gender, country
+    - The Vehicle entity should contain at least the following data: manufacturer (e.g., Kia, Porsche...), type (e.g., SUV, station wagon, sedan...), color, year
+    - The Reservation entity must contain information about the rental time (from, to), the client, and the vehicle.
     
-Pravila:
+Rules:
 
-    - Nije moguće izraditi rezervaciju za isto vozilo u istom vremena izmajmljivanja
-    - Klijent ne može istovremeno iznajmiti više od tri vozila
-    - Klijent ne može istovremeno iznajmiti više od jednog vozila po tipu
-    - Pregled klijenata treba imati mogućnost pretrage po barem dva parametra (npr. ime,
-        prezime)
-    - Pregled vozila treba imati mogućnost pretrage po barem dva parametra (npr. tip, model)
-    - Pregled rezervacija treba imati mogućnost pretrage po barem dva parametra (npr. datum,
-        klijent)
+    - It is not possible to create a reservation for the same vehicle at the same rental time
+    - A client cannot rent more than three vehicles simultaneously
+    - A client cannot rent more than one vehicle per type simultaneously
+    - The client overview should have the ability to search by at least two parameters (e.g., first name, last name)
+    - The vehicle overview should have the ability to search by at least two parameters (e.g., type, model)
+    - The reservation overview should have the ability to search by at least two parameters (e.g., date, client)
         
-Zadatak 1
+Task 1
 
-Napraviti bazu u MSSQL sa potrebnim tablicama (entitetima) koja podržavaju definirani podatkovni
-skup.
+Create a database in MSSQL with the necessary tables (entities) that support the defined dataset.
 
-Zadatak 2
+Task 2
 
-Napraviti WEB aplikaciju prema specifikaciji. Za backend koristiti C#, za frontend proizvoljno odabrati
-tehnologiju. Za komunikaciju sa bazom podataka koristiti SQL storane procedure.
+Create a web application according to the specification. Use C# for the backend and choose any technology for the frontend. Use SQL stored procedures to communicate with the database.
